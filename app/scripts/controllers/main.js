@@ -8,8 +8,8 @@
  * Controller of the bmiCalculatorAngularApp
  */
 angular.module('bmiCalculatorAngularApp')
-  .controller('MainCtrl', function () {
-    this.calculations = [];
+  .controller('MainCtrl', ['CalculationService', function (CalculationService) {
+    this.calculations = CalculationService.list();
     this.isValidForm = false;
     this.mode = 'standard';
     this.modes = {};
@@ -34,7 +34,7 @@ angular.module('bmiCalculatorAngularApp')
       } else if (self.mode === 'metric') {
         self.bmi = Number(self.modes.metric.kg) + Number(self.modes.metric.cm);
       }
-      self.calculations.push({date: new Date(), bmi: this.bmi, mode: self.mode});
+      CalculationService.add({date: new Date(), bmi: this.bmi, mode: self.mode});
       self.modes[self.mode] = {};
       self.isValidForm = false;
       return self.bmi;
@@ -65,4 +65,15 @@ angular.module('bmiCalculatorAngularApp')
       }
       return errorType;
     }
-  });
+  }])
+  .factory('CalculationService', [function() {
+    var items = [];
+    return {
+      list: function() {
+        return items;
+      },
+      add: function(item) {
+        items.push(item);
+      }
+    };
+  }]);
