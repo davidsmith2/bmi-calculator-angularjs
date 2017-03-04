@@ -14,30 +14,60 @@ describe('Controller: MainCtrl', function () {
     MainCtrl = $controller('MainCtrl', {
       $scope: scope
     });
-    MainCtrl.standard = {lb: 1, ft: 1, in: 1};
+    MainCtrl.modes.standard = {lb: 1, ft: 1, in: 1};
+    MainCtrl.modes.metric = {kg: 1, cm: 1};
   }));
 
-  it('should record calculations', function () {
-    expect(MainCtrl.calculations.length).toBe(0);
+  describe('recording calculations', function() {
+    it('should record calculations', function () {
+      expect(MainCtrl.calculations.length).toBe(0);
+    });
   });
 
-  it('should validate input', function () {
-    expect(MainCtrl.isValidForm).toEqual(false);
-    MainCtrl.validateForm();
-    expect(MainCtrl.isValidForm).toEqual(true);
+  describe('getting measurements', function() {
+    it('should handle standard', function() {
+      MainCtrl.mode = 'standard';
+      expect(MainCtrl.getMeasurements()).toEqual(['lb', 'ft', 'in']);
+    });
+    it('should handle metric', function() {
+      MainCtrl.mode = 'metric';
+      expect(MainCtrl.getMeasurements()).toEqual(['kg', 'cm']);
+    });
   });
 
-  it('should required measurements based on mode', function() {
-    expect(MainCtrl.getMeasurements()).toEqual(['lb', 'ft', 'in']);
-    expect(MainCtrl.getMeasurements('metric')).toEqual(['kg', 'cm']);
+  describe('calculating BMI', function() {
+    it('should handle standard', function() {
+      var bmi;
+      MainCtrl.mode = 'standard';
+      bmi = MainCtrl.calculateBMI();
+      expect(bmi).toEqual(3);
+      expect(MainCtrl.calculations.length).toEqual(1);
+      expect(MainCtrl.modes.standard).toEqual({});
+      expect(MainCtrl.isValidForm).toEqual(false);
+    });
+    it('should calculate BMI', function() {
+      var bmi;
+      MainCtrl.mode = 'metric';
+      bmi = MainCtrl.calculateBMI();
+      expect(bmi).toEqual(2);
+      expect(MainCtrl.calculations.length).toEqual(1);
+      expect(MainCtrl.modes.metric).toEqual({});
+      expect(MainCtrl.isValidForm).toEqual(false);
+    });
   });
 
-  it('should calculate BMI', function() {
-    var bmi = MainCtrl.calculateBMI();
-    expect(bmi).toEqual(3);
-    expect(MainCtrl.calculations.length).toEqual(1);
-    expect(MainCtrl.standard).toEqual({});
-    expect(MainCtrl.isValidForm).toEqual(false);
+  describe('setting the mode', function() {
+    it('should start standard', function() {
+      expect(MainCtrl.mode).toEqual('standard');
+    });
+    it('should change to metric', function() {
+      MainCtrl.changeMode('metric');
+      expect(MainCtrl.mode).toEqual('metric');
+    });
+    it('should change back to standard', function() {
+      MainCtrl.changeMode('standard');
+      expect(MainCtrl.mode).toEqual('standard');
+    });
   });
 
 });

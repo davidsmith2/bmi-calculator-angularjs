@@ -26,29 +26,137 @@
       <main ng-controller="MainCtrl as mainCtrl">
         <div class="row">
           <div class="col-sm-4">
-            <form ng-submit="mainCtrl.calculateBMI()">
-              <fieldset>
-                <legend>Weight</legend>
-                <div class="form-group">
-                  <label for="weight--lb">lb</label>
-                  <input class="form-control" id="weight--lb" ng-blur="mainCtrl.validateForm()" ng-model="mainCtrl.standard.lb" required type="number">
-                </div>
-              </fieldset>
-              <fieldset>
-                <legend>Height</legend>
-                <div class="form-group">
-                  <label for="height--ft">ft</label>
-                  <input class="form-control" id="height--ft" ng-blur="mainCtrl.validateForm()" ng-model="mainCtrl.standard.ft" required type="number">
-                </div>
-                <div class="form-group">
-                  <label for="height--in">in</label>
-                  <input class="form-control" id="height--in" ng-blur="mainCtrl.validateForm()" ng-model="mainCtrl.standard.in" required type="number">
-                </div>
-              </fieldset>
-              <div class="form-group">
-                <input class="btn btn-primary" ng-disabled="!mainCtrl.isValidForm" type="submit" value="Calculate">
+            <ul class="nav nav-tabs">
+              <li class="active">
+                <a class="active" data-toggle="tab" href="#standard" ng-click="mainCtrl.changeMode('standard')">Standard</a>
+              </li>
+              <li>
+                <a data-toggle="tab" href="#metric" ng-click="mainCtrl.changeMode('metric')">Metric</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="standard">
+                <form name="form.standard" ng-submit="mainCtrl.calculateBMI()">
+                  <fieldset>
+                    <legend>Weight</legend>
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('lb').className">
+                      <label for="lb">lb</label>
+                      <input
+                        class="form-control"
+                        id="lb"
+                        name="lb"
+                        ng-blur="mainCtrl.onBlurInput($event)"
+                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-model="mainCtrl.modes.standard.lb"
+                        required
+                        type="number"
+                      >
+                      <span
+                        class="help-block"
+                        ng-bind="mainCtrl.getHelpBlock('lb').msg"
+                        ng-show="mainCtrl.showHelpBlock('lb')">
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>Height</legend>
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('ft').className">
+                      <label for="ft">ft</label>
+                      <input
+                        class="form-control"
+                        id="ft"
+                        name="ft"
+                        ng-blur="mainCtrl.onBlurInput($event)"
+                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-model="mainCtrl.modes.standard.ft"
+                        required
+                        type="number"
+                      >
+                      <span
+                        class="help-block"
+                        ng-bind="mainCtrl.getHelpBlock('ft').msg"
+                        ng-show="mainCtrl.showHelpBlock('ft')">
+                      </span>
+                    </div>
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('in').className">
+                      <label for="in">in</label>
+                      <input
+                        class="form-control"
+                        id="in"
+                        name="in"
+                        ng-blur="mainCtrl.onBlurInput($event)"
+                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-model="mainCtrl.modes.standard.in"
+                        required
+                        type="number"
+                      >
+                      <span
+                        class="help-block"
+                        ng-bind="mainCtrl.getHelpBlock('in').msg"
+                        ng-show="mainCtrl.showHelpBlock('in')">
+                      </span>
+                    </div>
+                  </fieldset>
+                  <div class="form-group">
+                    <input
+                      class="btn btn-primary"
+                      ng-disabled="form.standard.$invalid"
+                      type="submit"
+                      value="Calculate"
+                    >
+                  </div>
+                </form>
               </div>
-            </form>
+              <div class="tab-pane" id="metric">
+                <form name="form.metric" ng-submit="mainCtrl.calculateBMI()">
+                  <fieldset>
+                    <legend>Weight</legend>
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('kg').className">
+                      <label for="kg">kg</label>
+                      <input
+                        class="form-control"
+                        id="kg"
+                        name="kg"
+                        ng-blur="mainCtrl.onBlurInput($event)"
+                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-model="mainCtrl.modes.metric.kg"
+                        required
+                        type="number"
+                      >
+                      <span
+                        class="help-block"
+                        ng-bind="mainCtrl.getHelpBlock('kg').msg"
+                        ng-show="mainCtrl.showHelpBlock('kg')">
+                      </span>
+                    </div>
+                  </fieldset>
+                  <fieldset>
+                    <legend>Height</legend>
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('cm').className">
+                      <label for="cm">cm</label>
+                      <input
+                        class="form-control"
+                        id="cm"
+                        name="cm"
+                        ng-blur="mainCtrl.onBlurInput($event)"
+                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-model="mainCtrl.modes.metric.cm"
+                        required
+                        type="number"
+                      >
+                      <span
+                        class="help-block"
+                        ng-bind="mainCtrl.getHelpBlock('cm').msg"
+                        ng-show="mainCtrl.showHelpBlock('cm')">
+                      </span>
+                    </div>
+                  </fieldset>
+                  <div class="form-group">
+                    <input class="btn btn-primary" ng-disabled="form.metric.$invalid" type="submit" value="Calculate">
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
           <div class="col-sm-4">
             <div class="jumbotron">
