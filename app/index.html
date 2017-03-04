@@ -39,61 +39,67 @@
                 <form name="form.standard" ng-submit="mainCtrl.calculateBMI()">
                   <fieldset>
                     <legend>Weight</legend>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('lb').className">
+                    <div
+                      class="form-group"
+                      ng-class="mainCtrl.getHelpBlock(form.standard.lb.$error).className"
+                    >
                       <label for="lb">lb</label>
                       <input
                         class="form-control"
                         id="lb"
                         name="lb"
-                        ng-blur="mainCtrl.onBlurInput($event)"
-                        ng-keyup="mainCtrl.onKeyupInput($event)"
                         ng-model="mainCtrl.modes.standard.lb"
+                        ng-pattern="/^[0-9]{1,7}$/"
                         required
-                        type="number"
+                        type="text"
                       >
                       <span
                         class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock('lb').msg"
-                        ng-show="mainCtrl.showHelpBlock('lb')">
+                        ng-bind="mainCtrl.getHelpBlock(form.standard.lb.$error).msg"
+                        ng-show="mainCtrl.showHelpBlock(form.standard.lb.$error)">
                       </span>
                     </div>
                   </fieldset>
                   <fieldset>
                     <legend>Height</legend>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('ft').className">
+                    <div
+                      class="form-group"
+                      ng-class="mainCtrl.getHelpBlock(form.standard.ft.$error).className"
+                    >
                       <label for="ft">ft</label>
                       <input
                         class="form-control"
                         id="ft"
                         name="ft"
-                        ng-blur="mainCtrl.onBlurInput($event)"
-                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-pattern="/^[0-9]{1,7}$/"
                         ng-model="mainCtrl.modes.standard.ft"
                         required
-                        type="number"
+                        type="text"
                       >
                       <span
                         class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock('ft').msg"
-                        ng-show="mainCtrl.showHelpBlock('ft')">
+                        ng-bind="mainCtrl.getHelpBlock(form.standard.ft.$error).msg"
+                        ng-show="mainCtrl.showHelpBlock(form.standard.ft.$error)">
                       </span>
                     </div>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('in').className">
+                    <div
+                      class="form-group"
+                      ng-class="mainCtrl.getHelpBlock(form.standard.in.$error).className"
+                    >
                       <label for="in">in</label>
                       <input
                         class="form-control"
                         id="in"
                         name="in"
-                        ng-blur="mainCtrl.onBlurInput($event)"
-                        ng-keyup="mainCtrl.onKeyupInput($event)"
+                        ng-pattern="/^[0-9]{1,7}$/"
                         ng-model="mainCtrl.modes.standard.in"
                         required
-                        type="number"
+                        type="text"
                       >
                       <span
                         class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock('in').msg"
-                        ng-show="mainCtrl.showHelpBlock('in')">
+                        ng-bind="mainCtrl.getHelpBlock(form.standard.in.$error).msg"
+                        ng-show="mainCtrl.showHelpBlock(form.standard.in.$error)">
                       </span>
                     </div>
                   </fieldset>
@@ -111,43 +117,41 @@
                 <form name="form.metric" ng-submit="mainCtrl.calculateBMI()">
                   <fieldset>
                     <legend>Weight</legend>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('kg').className">
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.kg.$error).className">
                       <label for="kg">kg</label>
                       <input
                         class="form-control"
                         id="kg"
                         name="kg"
-                        ng-blur="mainCtrl.onBlurInput($event)"
-                        ng-keyup="mainCtrl.onKeyupInput($event)"
                         ng-model="mainCtrl.modes.metric.kg"
+                        ng-pattern="/^[0-9]{1,7}$/"
                         required
-                        type="number"
+                        type="text"
                       >
                       <span
                         class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock('kg').msg"
-                        ng-show="mainCtrl.showHelpBlock('kg')">
+                        ng-bind="mainCtrl.getHelpBlock(form.metric.kg.$error).msg"
+                        ng-show="mainCtrl.showHelpBlock(form.metric.kg.$error)">
                       </span>
                     </div>
                   </fieldset>
                   <fieldset>
                     <legend>Height</legend>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock('cm').className">
+                    <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.cm.$error).className">
                       <label for="cm">cm</label>
                       <input
                         class="form-control"
                         id="cm"
                         name="cm"
-                        ng-blur="mainCtrl.onBlurInput($event)"
-                        ng-keyup="mainCtrl.onKeyupInput($event)"
                         ng-model="mainCtrl.modes.metric.cm"
+                        ng-pattern="/^[0-9]{1,7}$/"
                         required
-                        type="number"
+                        type="text"
                       >
                       <span
                         class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock('cm').msg"
-                        ng-show="mainCtrl.showHelpBlock('cm')">
+                        ng-bind="mainCtrl.getHelpBlock(form.metric.cm.$error).msg"
+                        ng-show="mainCtrl.showHelpBlock(form.metric.cm.$error)">
                       </span>
                     </div>
                   </fieldset>

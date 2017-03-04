@@ -13,18 +13,17 @@ angular.module('bmiCalculatorAngularApp')
     this.isValidForm = false;
     this.mode = 'standard';
     this.modes = {};
-    this.validationStates = {};
     this.helpBlocks = {
       success: {
-        msg: 'Success',
+        msg: 'OK',
         className: 'has-success'
       },
-      warning: {
-        msg: 'Warning',
+      pattern: {
+        msg: 'Not a valid number',
         className: 'has-warning'
       },
-      error: {
-        msg: 'Error',
+      required: {
+        msg: 'This field is required',
         className: 'has-error'
       }
     };
@@ -49,29 +48,21 @@ angular.module('bmiCalculatorAngularApp')
     this.changeMode = function(mode) {
       self.mode = mode;
     };
-    this.onKeyupInput = function(event) {
-      console.log('keyup');
-      if (!event.target.value) return;
-      self.validationStates[event.target.name] = (event.which < 48 || event.which > 57) ? 'warning' : 'success';
+    this.getHelpBlock = function(error) {
+      return self.helpBlocks[this.getErrorType(error)];
     };
-    this.onBlurInput = function(event) {
-      console.log('blur');
-      self.validationStates[event.target.name] = (!event.target.value) ? 'error' : 'success';
+    this.showHelpBlock = function(error) {
+      return this.getErrorType(error) !== 'success';
     };
-    this.onFocusInput = function(event) {
-      console.log('focus');
-      if (event.target.value) {
-        console.log(event);
+    this.getErrorType = function(error) {
+      var errorType;
+      if (error.required) {
+        errorType = 'required';
+      } else if (error.pattern) {
+        errorType = 'pattern';
+      } else {
+        errorType = 'success';
       }
-    };
-    this.getHelpBlock = function(inputName) {
-      var validationState = self.validationStates[inputName];
-      if (typeof validationState === 'undefined') return;
-      return self.helpBlocks[self.validationStates[inputName]];
-    };
-    this.showHelpBlock = function(inputName) {
-      var validationState = self.validationStates[inputName];
-      if (typeof validationState === 'undefined') return;
-      return validationState !== 'success';
-    };
+      return errorType;
+    }
   });
