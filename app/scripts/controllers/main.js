@@ -10,9 +10,14 @@
 angular.module('bmiCalculatorAngularApp')
   .controller('MainCtrl', function () {
     var self = this;
-    var standardMeasurements = ['lb', 'ft', 'in'];
     this.calculations = [];
     this.isValidForm = false;
+    this.validateForm = function() {
+      if (Object.keys(self.standard).length === this.getMeasurements().length) {
+        self.isValidForm = true;
+      }
+      return self.isValidForm;
+    };
     this.calculateBMI = function() {
       self.bmi = self.standard.lb + self.standard.ft + self.standard.in;
       self.calculations.push({date: new Date(), bmi: this.bmi, mode: 'Standard'});
@@ -20,10 +25,10 @@ angular.module('bmiCalculatorAngularApp')
       self.isValidForm = false;
       return self.bmi;
     };
-    this.validateForm = function() {
-      if (Object.keys(self.standard).length === standardMeasurements.length) {
-        self.isValidForm = true;
+    this.getMeasurements = function(mode) {
+      if (mode === 'metric') {
+        return ['kg', 'cm'];
       }
-      return self.isValidForm;
-    }
+      return ['lb', 'ft', 'in'];
+    };
   });

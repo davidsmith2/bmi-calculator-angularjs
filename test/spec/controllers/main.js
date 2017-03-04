@@ -13,11 +13,31 @@ describe('Controller: MainCtrl', function () {
     scope = $rootScope.$new();
     MainCtrl = $controller('MainCtrl', {
       $scope: scope
-      // place here mocked dependencies
     });
+    MainCtrl.standard = {lb: 1, ft: 1, in: 1};
   }));
 
-  it('should attach a list of awesomeThings to the scope', function () {
-    expect(MainCtrl.awesomeThings.length).toBe(3);
+  it('should record calculations', function () {
+    expect(MainCtrl.calculations.length).toBe(0);
   });
+
+  it('should validate input', function () {
+    expect(MainCtrl.isValidForm).toEqual(false);
+    MainCtrl.validateForm();
+    expect(MainCtrl.isValidForm).toEqual(true);
+  });
+
+  it('should required measurements based on mode', function() {
+    expect(MainCtrl.getMeasurements()).toEqual(['lb', 'ft', 'in']);
+    expect(MainCtrl.getMeasurements('metric')).toEqual(['kg', 'cm']);
+  });
+
+  it('should calculate BMI', function() {
+    var bmi = MainCtrl.calculateBMI();
+    expect(bmi).toEqual(3);
+    expect(MainCtrl.calculations.length).toEqual(1);
+    expect(MainCtrl.standard).toEqual({});
+    expect(MainCtrl.isValidForm).toEqual(false);
+  });
+
 });
