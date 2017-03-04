@@ -16,11 +16,11 @@
     <!-- endbuild -->
   </head>
   <body ng-app="bmiCalculatorAngularApp">
-    <div class="container">
-      <header id="app-header">
-        <h1>
-          Body mass index (BMI)<br>
-          <small>A measure of body fat in adults</small>
+    <div class="container-fluid">
+      <header class="page-header text-center">
+        <h1 class="clearfix">
+          <span class="pull-left">Body mass index (BMI)</span>
+          <small class="pull-right">A measure of body fat in adults</small>
         </h1>
       </header>
       <main ng-controller="MainCtrl as mainCtrl">
@@ -36,127 +36,139 @@
             </ul>
             <div class="tab-content">
               <div class="tab-pane active" id="standard">
-                <form name="form.standard" ng-submit="mainCtrl.calculateBMI()">
-                  <fieldset>
-                    <legend>Weight</legend>
-                    <div
-                      class="form-group"
-                      ng-class="mainCtrl.getHelpBlock(form.standard.lb.$error).className"
-                    >
-                      <label for="lb">lb</label>
+                <form class="form-horizontal" name="form.standard" ng-submit="mainCtrl.calculateBMI()">
+                  <div
+                    class="form-group"
+                    ng-class="mainCtrl.getHelpBlock(form.standard.lb.$error).className"
+                  >
+                    <label class="col-sm-2 control-label pull-right" for="lb">lb</label>
+                    <div class="col-sm-10 pull-left">
                       <input
-                        class="form-control"
+                        class="col-sm-10 form-control"
                         id="lb"
                         name="lb"
                         ng-model="mainCtrl.modes.standard.lb"
                         ng-pattern="/^[0-9]{1,7}$/"
+                        placeholder="pounds"
                         required
                         type="text"
                       >
                       <span
                         class="help-block"
                         ng-bind="mainCtrl.getHelpBlock(form.standard.lb.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.standard.lb.$error)">
+                        ng-show="mainCtrl.showHelpBlock(form.standard.lb.$error)"
+                      >
                       </span>
                     </div>
-                  </fieldset>
-                  <fieldset>
-                    <legend>Height</legend>
-                    <div
-                      class="form-group"
-                      ng-class="mainCtrl.getHelpBlock(form.standard.ft.$error).className"
-                    >
-                      <label for="ft">ft</label>
+                  </div>
+                  <div
+                    class="form-group"
+                    ng-class="mainCtrl.getHelpBlock(form.standard.ft.$error).className"
+                  >
+                    <label class="col-sm-2 control-label pull-right" for="ft">ft</label>
+                    <div class="col-sm-10 pull-left">
                       <input
                         class="form-control"
                         id="ft"
                         name="ft"
                         ng-pattern="/^[0-9]{1,7}$/"
                         ng-model="mainCtrl.modes.standard.ft"
+                        placeholder="feet"
                         required
                         type="text"
                       >
                       <span
                         class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock(form.standard.ft.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.standard.ft.$error)">
+                          ng-bind="mainCtrl.getHelpBlock(form.standard.ft.$error).msg"
+                          ng-show="mainCtrl.showHelpBlock(form.standard.ft.$error)"
+                      >
                       </span>
                     </div>
-                    <div
-                      class="form-group"
-                      ng-class="mainCtrl.getHelpBlock(form.standard.in.$error).className"
-                    >
-                      <label for="in">in</label>
+                  </div>
+                  <div
+                    class="form-group"
+                    ng-class="mainCtrl.getHelpBlock(form.standard.in.$error).className"
+                  >
+                    <label class="col-sm-2 control-label pull-right" for="in">in</label>
+                    <div class="col-sm-10 pull-left">
                       <input
                         class="form-control"
                         id="in"
                         name="in"
                         ng-pattern="/^[0-9]{1,7}$/"
                         ng-model="mainCtrl.modes.standard.in"
+                        placeholder="inches"
                         required
                         type="text"
                       >
                       <span
                         class="help-block"
                         ng-bind="mainCtrl.getHelpBlock(form.standard.in.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.standard.in.$error)">
+                        ng-show="mainCtrl.showHelpBlock(form.standard.in.$error)"
+                      >
                       </span>
                     </div>
-                  </fieldset>
+                  </div>
                   <div class="form-group">
-                    <input
-                      class="btn btn-primary"
-                      ng-disabled="form.standard.$invalid"
-                      type="submit"
-                      value="Calculate"
-                    >
+                    <div class="col-sm-12">
+                      <input
+                        class="btn btn-primary"
+                        ng-disabled="form.standard.$invalid"
+                        type="submit"
+                        value="Calculate"
+                      >
+                    </div>
                   </div>
                 </form>
               </div>
               <div class="tab-pane" id="metric">
-                <form name="form.metric" ng-submit="mainCtrl.calculateBMI()">
-                  <fieldset>
-                    <legend>Weight</legend>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.kg.$error).className">
-                      <label for="kg">kg</label>
+                <form class="form-horizontal" name="form.metric" ng-submit="mainCtrl.calculateBMI()">
+                  <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.kg.$error).className">
+                    <label class="col-sm-2 control-label pull-right" for="kg">kg</label>
+                    <div class="col-sm-10 pull-left">
                       <input
                         class="form-control"
                         id="kg"
                         name="kg"
                         ng-model="mainCtrl.modes.metric.kg"
                         ng-pattern="/^[0-9]{1,7}$/"
+                        placeholder="kg"
                         required
                         type="text"
                       >
                       <span
                         class="help-block"
                         ng-bind="mainCtrl.getHelpBlock(form.metric.kg.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.metric.kg.$error)">
+                        ng-show="mainCtrl.showHelpBlock(form.metric.kg.$error)"
+                      >
                       </span>
                     </div>
-                  </fieldset>
-                  <fieldset>
-                    <legend>Height</legend>
-                    <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.cm.$error).className">
-                      <label for="cm">cm</label>
+                  </div>
+                  <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.cm.$error).className">
+                    <label class="col-sm-2 control-label pull-right" for="cm">cm</label>
+                    <div class="col-sm-10 pull-left">
                       <input
                         class="form-control"
                         id="cm"
                         name="cm"
                         ng-model="mainCtrl.modes.metric.cm"
                         ng-pattern="/^[0-9]{1,7}$/"
+                        placeholder="cm"
                         required
                         type="text"
                       >
                       <span
                         class="help-block"
                         ng-bind="mainCtrl.getHelpBlock(form.metric.cm.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.metric.cm.$error)">
+                        ng-show="mainCtrl.showHelpBlock(form.metric.cm.$error)"
+                      >
                       </span>
                     </div>
-                  </fieldset>
+                  </div>
                   <div class="form-group">
-                    <input class="btn btn-primary" ng-disabled="form.metric.$invalid" type="submit" value="Calculate">
+                    <div class="col-sm-12">
+                      <input class="btn btn-primary" ng-disabled="form.metric.$invalid" type="submit" value="Calculate">
+                    </div>
                   </div>
                 </form>
               </div>
@@ -190,7 +202,7 @@
           </div>
         </div>
       </main>
-      <footer>
+      <footer class="text-center">
         <small>Sources: US National Institute of Health, EXTOXNET</small>
       </footer>
     </div>

@@ -30,9 +30,9 @@ angular.module('bmiCalculatorAngularApp')
     var self = this;
     this.calculateBMI = function() {
       if (self.mode === 'standard') {
-        self.bmi = self.modes.standard.lb + self.modes.standard.ft + self.modes.standard.in;
+        self.bmi = Number(self.modes.standard.lb) + Number(self.modes.standard.ft) + Number(self.modes.standard.in);
       } else if (self.mode === 'metric') {
-        self.bmi = self.modes.metric.kg + self.modes.metric.cm;
+        self.bmi = Number(self.modes.metric.kg) + Number(self.modes.metric.cm);
       }
       self.calculations.push({date: new Date(), bmi: this.bmi, mode: self.mode});
       self.modes[self.mode] = {};
@@ -52,7 +52,7 @@ angular.module('bmiCalculatorAngularApp')
       return self.helpBlocks[this.getErrorType(error)];
     };
     this.showHelpBlock = function(error) {
-      return this.getErrorType(error) !== 'success';
+      return this.getErrorType(error);
     };
     this.getErrorType = function(error) {
       var errorType;
