@@ -16,12 +16,12 @@ angular.module('bmiCalculatorAngularApp')
       create: function(item) {
         return $http.post('http://localhost:3000/api/bmi', item);
       },
-      calculate: function(model, mode) {
+      calculate: function(model) {
         var kg, m;
-        if (mode === 'standard') {
+        if (model.mode === 'standard') {
           kg = Number(model.lb) * 0.45;
           m = ((Number(model.ft) * 12) + Number(model.in)) * 0.025;
-        } else if (mode === 'metric') {
+        } else if (model.mode === 'metric') {
           kg = Number(model.kg);
           m = Number(model.cm) / 100;
         }
@@ -30,8 +30,6 @@ angular.module('bmiCalculatorAngularApp')
     };
   }])
   .controller('MainCtrl', ['CalculationService', function (CalculationService) {
-    this.isValidForm = false;
-    this.mode = 'standard';
     this.helpBlocks = {
       success: {
         msg: 'OK',
@@ -59,24 +57,14 @@ angular.module('bmiCalculatorAngularApp')
     };
     fetchData();
     this.calculateBMI = function() {
-      self.bmi = CalculationService.calculate(self.model, self.mode);
+      self.bmi = CalculationService.calculate(self.model);
       CalculationService
-        .create({id: $.now(), date: new Date(), bmi: self.bmi, mode: self.mode})
+        .create({id: $.now(), date: new Date(), bmi: self.bmi, mode: self.model.mode})
         .then(fetchData)
         .then(function(response) {
           console.log(response);
-          self.isValidForm = false;
           self.model = {};
         });
-    };
-    this.getMeasurements = function() {
-      if (self.mode === 'metric') {
-        return ['kg', 'cm'];
-      }
-      return ['lb', 'ft', 'in'];
-    };
-    this.changeMode = function(mode) {
-      self.mode = mode;
     };
     this.getHelpBlock = function(error) {
       return self.helpBlocks[this.getErrorType(error)];
@@ -94,5 +82,8 @@ angular.module('bmiCalculatorAngularApp')
         errorType = 'success';
       }
       return errorType;
+    };
+    this.isMode = function(mode) {
+      return self.model && self.model.mode && self.model.mode === mode;
     };
   }]);

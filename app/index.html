@@ -26,153 +26,177 @@
       <main ng-controller="MainCtrl as mainCtrl">
         <div class="row">
           <div class="col-sm-4">
-            <ul class="nav nav-tabs">
-              <li class="active">
-                <a class="active" data-toggle="tab" href="#standard" ng-click="mainCtrl.changeMode('standard')">Standard</a>
-              </li>
-              <li>
-                <a data-toggle="tab" href="#metric" ng-click="mainCtrl.changeMode('metric')">Metric</a>
-              </li>
-            </ul>
-            <div class="tab-content">
-              <div class="tab-pane active" id="standard">
-                <form class="form-horizontal" name="form.standard" ng-submit="mainCtrl.calculateBMI()">
-                  <div
-                    class="form-group"
-                    ng-class="mainCtrl.getHelpBlock(form.standard.lb.$error).className"
+            <form class="form-horizontal" name="form" ng-submit="mainCtrl.calculateBMI()">
+              <div
+                class="form-group"
+                ng-class="mainCtrl.getHelpBlock(form.mode.$error).className"
+              >
+                <div class="col-sm-6">
+                  <div class="radio">
+                    <label>
+                      <input
+                        name="mode"
+                        ng-model="mainCtrl.model.mode"
+                        required="mainCtrl.isMode('standard')"
+                        type="radio"
+                        value="standard"
+                      >
+                      Standard
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="radio">
+                    <label>
+                      <input
+                        name="mode"
+                        ng-model="mainCtrl.model.mode"
+                        required="mainCtrl.isMode('metric')"
+                        type="radio"
+                        value="metric"
+                      >
+                      Metric
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-12">
+                  <span
+                    class="help-block"
+                    ng-bind="mainCtrl.getHelpBlock(form.mode.$error).msg"
+                    ng-show="mainCtrl.showHelpBlock(form.mode.$error)"
                   >
-                    <label class="col-sm-2 control-label pull-right" for="lb">lb</label>
-                    <div class="col-sm-10 pull-left">
-                      <input
-                        class="col-sm-10 form-control"
-                        id="lb"
-                        name="lb"
-                        ng-model="mainCtrl.model.lb"
-                        ng-pattern="/^[0-9]{1,7}$/"
-                        placeholder="e.g., 175"
-                        required
-                        type="text"
-                      >
-                      <span
-                        class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock(form.standard.lb.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.standard.lb.$error)"
-                      >
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="form-group"
-                    ng-class="mainCtrl.getHelpBlock(form.standard.ft.$error).className"
-                  >
-                    <label class="col-sm-2 control-label pull-right" for="ft">ft</label>
-                    <div class="col-sm-10 pull-left">
-                      <input
-                        class="form-control"
-                        id="ft"
-                        name="ft"
-                        ng-pattern="/^[0-9]{1,7}$/"
-                        ng-model="mainCtrl.model.ft"
-                        placeholder="e.g., 5"
-                        required
-                        type="text"
-                      >
-                      <span
-                        class="help-block"
-                          ng-bind="mainCtrl.getHelpBlock(form.standard.ft.$error).msg"
-                          ng-show="mainCtrl.showHelpBlock(form.standard.ft.$error)"
-                      >
-                      </span>
-                    </div>
-                  </div>
-                  <div
-                    class="form-group"
-                    ng-class="mainCtrl.getHelpBlock(form.standard.in.$error).className"
-                  >
-                    <label class="col-sm-2 control-label pull-right" for="in">in</label>
-                    <div class="col-sm-10 pull-left">
-                      <input
-                        class="form-control"
-                        id="in"
-                        name="in"
-                        ng-pattern="/^[0-9]{1,7}$/"
-                        ng-model="mainCtrl.model.in"
-                        placeholder="e.g., 8"
-                        required
-                        type="text"
-                      >
-                      <span
-                        class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock(form.standard.in.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.standard.in.$error)"
-                      >
-                      </span>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-12">
-                      <input
-                        class="btn btn-primary"
-                        ng-disabled="form.standard.$invalid"
-                        type="submit"
-                        value="Calculate"
-                      >
-                    </div>
-                  </div>
-                </form>
+                  </span>
+                </div>
               </div>
-              <div class="tab-pane" id="metric">
-                <form class="form-horizontal" name="form.metric" ng-submit="mainCtrl.calculateBMI()">
-                  <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.kg.$error).className">
-                    <label class="col-sm-2 control-label pull-right" for="kg">kg</label>
-                    <div class="col-sm-10 pull-left">
-                      <input
-                        class="form-control"
-                        id="kg"
-                        name="kg"
-                        ng-model="mainCtrl.model.kg"
-                        ng-pattern="/^[0-9]{1,7}$/"
-                        placeholder="e.g., 79"
-                        required
-                        type="text"
-                      >
-                      <span
-                        class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock(form.metric.kg.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.metric.kg.$error)"
-                      >
-                      </span>
-                    </div>
+              <ng-form name="standard" ng-show="mainCtrl.isMode('standard')">
+                <div
+                  class="form-group"
+                  ng-class="mainCtrl.getHelpBlock(form.standard.lb.$error).className"
+                >
+                  <label class="col-sm-2 control-label pull-right" for="lb">lb</label>
+                  <div class="col-sm-10 pull-left">
+                    <input
+                      class="form-control"
+                      id="lb"
+                      name="lb"
+                      ng-model="mainCtrl.model.lb"
+                      ng-pattern="/^[0-9]{1,7}$/"
+                      placeholder="e.g., 175"
+                      ng-required="mainCtrl.isMode('standard')"
+                      type="text"
+                    >
+                    <span
+                      class="help-block"
+                      ng-bind="mainCtrl.getHelpBlock(form.standard.lb.$error).msg"
+                      ng-show="mainCtrl.showHelpBlock(form.standard.lb.$error)"
+                    >
+                    </span>
                   </div>
-                  <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.cm.$error).className">
-                    <label class="col-sm-2 control-label pull-right" for="cm">cm</label>
-                    <div class="col-sm-10 pull-left">
-                      <input
-                        class="form-control"
-                        id="cm"
-                        name="cm"
-                        ng-model="mainCtrl.model.cm"
-                        ng-pattern="/^[0-9]{1,7}$/"
-                        placeholder="e.g., 173"
-                        required
-                        type="text"
-                      >
-                      <span
-                        class="help-block"
-                        ng-bind="mainCtrl.getHelpBlock(form.metric.cm.$error).msg"
-                        ng-show="mainCtrl.showHelpBlock(form.metric.cm.$error)"
-                      >
-                      </span>
-                    </div>
+                </div>
+                <div
+                  class="form-group"
+                  ng-class="mainCtrl.getHelpBlock(form.standard.ft.$error).className"
+                >
+                  <label class="col-sm-2 control-label pull-right" for="ft">ft</label>
+                  <div class="col-sm-10 pull-left">
+                    <input
+                      class="form-control"
+                      id="ft"
+                      name="ft"
+                      ng-pattern="/^[0-9]{1,7}$/"
+                      ng-model="mainCtrl.model.ft"
+                      placeholder="e.g., 5"
+                      ng-required="mainCtrl.isMode('standard')"
+                      type="text"
+                    >
+                    <span
+                      class="help-block"
+                      ng-bind="mainCtrl.getHelpBlock(form.standard.ft.$error).msg"
+                      ng-show="mainCtrl.showHelpBlock(form.standard.ft.$error)"
+                    >
+                  </span>
                   </div>
-                  <div class="form-group">
-                    <div class="col-sm-12">
-                      <input class="btn btn-primary" ng-disabled="form.metric.$invalid" type="submit" value="Calculate">
-                    </div>
+                </div>
+                <div
+                  class="form-group"
+                  ng-class="mainCtrl.getHelpBlock(form.standard.in.$error).className"
+                >
+                  <label class="col-sm-2 control-label pull-right" for="in">in</label>
+                  <div class="col-sm-10 pull-left">
+                    <input
+                      class="form-control"
+                      id="in"
+                      name="in"
+                      ng-pattern="/^[0-9]{1,7}$/"
+                      ng-model="mainCtrl.model.in"
+                      placeholder="e.g., 8"
+                      ng-required="mainCtrl.isMode('standard')"
+                      type="text"
+                    >
+                    <span
+                      class="help-block"
+                      ng-bind="mainCtrl.getHelpBlock(form.standard.in.$error).msg"
+                      ng-show="mainCtrl.showHelpBlock(form.standard.in.$error)"
+                    >
+                  </span>
                   </div>
-                </form>
+                </div>
+              </ng-form>
+              <ng-form name="metric" ng-show="mainCtrl.isMode('metric')">
+                <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.kg.$error).className">
+                  <label class="col-sm-2 control-label pull-right" for="kg">kg</label>
+                  <div class="col-sm-10 pull-left">
+                    <input
+                      class="form-control"
+                      id="kg"
+                      name="kg"
+                      ng-model="mainCtrl.model.kg"
+                      ng-pattern="/^[0-9]{1,7}$/"
+                      placeholder="e.g., 79"
+                      ng-required="mainCtrl.isMode('metric')"
+                      type="text"
+                    >
+                    <span
+                      class="help-block"
+                      ng-bind="mainCtrl.getHelpBlock(form.metric.kg.$error).msg"
+                      ng-show="mainCtrl.showHelpBlock(form.metric.kg.$error)"
+                    >
+                  </span>
+                  </div>
+                </div>
+                <div class="form-group" ng-class="mainCtrl.getHelpBlock(form.metric.cm.$error).className">
+                  <label class="col-sm-2 control-label pull-right" for="cm">cm</label>
+                  <div class="col-sm-10 pull-left">
+                    <input
+                      class="form-control"
+                      id="cm"
+                      name="cm"
+                      ng-model="mainCtrl.model.cm"
+                      ng-pattern="/^[0-9]{1,7}$/"
+                      placeholder="e.g., 173"
+                      ng-required="mainCtrl.isMode('metric')"
+                      type="text"
+                    >
+                    <span
+                      class="help-block"
+                      ng-bind="mainCtrl.getHelpBlock(form.metric.cm.$error).msg"
+                      ng-show="mainCtrl.showHelpBlock(form.metric.cm.$error)"
+                    >
+                  </span>
+                  </div>
+                </div>
+              </ng-form>
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <input
+                    class="btn btn-primary"
+                    ng-disabled="form.$invalid"
+                    type="submit"
+                    value="Calculate"
+                  >
+                </div>
               </div>
-            </div>
+            </form>
           </div>
           <div class="col-sm-4">
             <div class="jumbotron">
