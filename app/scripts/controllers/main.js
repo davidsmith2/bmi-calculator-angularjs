@@ -15,13 +15,23 @@ angular.module('bmiCalculatorAngularApp')
       },
       create: function(item) {
         return $http.post('http://localhost:3000/api/bmi', item);
+      },
+      calculate: function(model, mode) {
+        var kg, m;
+        if (mode === 'standard') {
+          kg = Number(model.lb) * 0.45;
+          m = ((Number(model.ft) * 12) + Number(model.in)) * 0.025;
+        } else if (mode === 'metric') {
+          kg = Number(model.kg);
+          m = Number(model.cm) / 100;
+        }
+        return (kg / Math.pow(m, 2)).toFixed(1);
       }
     };
   }])
   .controller('MainCtrl', ['CalculationService', function (CalculationService) {
     this.isValidForm = false;
     this.mode = 'standard';
-    this.modes = {};
     this.helpBlocks = {
       success: {
         msg: 'OK',
@@ -43,29 +53,21 @@ angular.module('bmiCalculatorAngularApp')
         .then(function(response) {
           self.calculations = response.data;
         }, function(errorResponse) {
+          console.log(errorResponse);
           console.log('error while fetching data');
         });
     };
     fetchData();
     this.calculateBMI = function() {
-      var kg, m;
-      if (self.mode === 'standard') {
-        kg = Number(self.modes.standard.lb) * 0.45;
-        m = ((Number(self.modes.standard.ft) * 12) + Number(self.modes.standard.in)) * 0.025;
-      } else if (self.mode === 'metric') {
-        kg = Number(self.modes.metric.kg);
-        m = Number(self.modes.metric.cm) / 100;
-      }
-      self.bmi = (kg / Math.pow(m, 2)).toFixed(1);
+      self.bmi = CalculationService.calculate(self.model, self.mode);
       CalculationService
         .create({id: $.now(), date: new Date(), bmi: self.bmi, mode: self.mode})
         .then(fetchData)
         .then(function(response) {
           console.log(response);
+          self.isValidForm = false;
+          self.model = {};
         });
-      self.modes[self.mode] = {};
-      self.isValidForm = false;
-      return self.bmi;
     };
     this.getMeasurements = function() {
       if (self.mode === 'metric') {
@@ -92,5 +94,5 @@ angular.module('bmiCalculatorAngularApp')
         errorType = 'success';
       }
       return errorType;
-    }
+    };
   }]);
