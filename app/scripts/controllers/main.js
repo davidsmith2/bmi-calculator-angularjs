@@ -29,8 +29,8 @@ angular.module('bmiCalculatorAngularApp')
       }
     };
   }])
-  .controller('MainCtrl', ['CalculationService', function (CalculationService) {
-    this.helpBlocks = {
+  .factory('HelpService', [function() {
+    return {
       success: {
         msg: 'OK',
         className: 'has-success'
@@ -44,18 +44,9 @@ angular.module('bmiCalculatorAngularApp')
         className: 'has-error'
       }
     };
+  }])
+  .controller('MainCtrl', ['CalculationService', 'HelpService', function (CalculationService, HelpService) {
     var self = this;
-    var fetchData = function() {
-      return CalculationService
-        .index()
-        .then(function(response) {
-          self.calculations = response.data;
-        }, function(errorResponse) {
-          console.log(errorResponse);
-          console.log('error while fetching data');
-        });
-    };
-    fetchData();
     this.calculateBMI = function() {
       self.bmi = CalculationService.calculate(self.model);
       CalculationService
@@ -67,7 +58,7 @@ angular.module('bmiCalculatorAngularApp')
         });
     };
     this.getHelpBlock = function(error) {
-      return self.helpBlocks[this.getErrorType(error)];
+      return HelpService[this.getErrorType(error)];
     };
     this.showHelpBlock = function(error) {
       return this.getErrorType(error);
@@ -86,4 +77,15 @@ angular.module('bmiCalculatorAngularApp')
     this.isMode = function(mode) {
       return self.model && self.model.mode && self.model.mode === mode;
     };
+    var fetchData = function() {
+      return CalculationService
+        .index()
+        .then(function(response) {
+          self.calculations = response.data;
+        }, function(errorResponse) {
+          console.log(errorResponse);
+          console.log('error while fetching data');
+        });
+    };
+    fetchData();
   }]);
