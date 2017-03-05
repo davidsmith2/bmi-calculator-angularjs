@@ -19,13 +19,14 @@ angular.module('bmiCalculatorAngularApp')
       calculate: function(model) {
         var kg, m;
         if (model.mode === 'standard') {
-          kg = Number(model.lb) * 0.45;
-          m = ((Number(model.ft) * 12) + Number(model.in)) * 0.025;
-        } else if (model.mode === 'metric') {
-          kg = Number(model.kg);
-          m = Number(model.cm) / 100;
+          kg = model.lb * 0.45;
+          m = ((model.ft * 12) + model.in) * 0.025;
         }
-        return (kg / Math.pow(m, 2)).toFixed(1);
+        if (model.mode === 'metric') {
+          kg = model.kg;
+          m = model.cm / 100;
+        }
+        return Number((kg / Math.pow(m, 2)).toFixed(1));
       }
     };
   }])
@@ -50,7 +51,7 @@ angular.module('bmiCalculatorAngularApp')
     this.calculateBMI = function() {
       self.bmi = CalculationService.calculate(self.model);
       CalculationService
-        .create({id: $.now(), date: new Date(), bmi: self.bmi, mode: self.model.mode})
+        .create(Object.assign({}, {id: $.now().toString(), date: new Date()}, {bmi: self.bmi}, self.model))
         .then(fetchData)
         .then(function(response) {
           console.log(response);
