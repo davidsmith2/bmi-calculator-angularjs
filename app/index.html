@@ -191,7 +191,7 @@
               </tr>
               </thead>
               <tbody>
-              <tr ng-repeat="calculation in mainCtrl.calculations">
+              <tr ng-repeat="calculation in mainCtrl.calculations track by $index">
                 <td ng-bind="$index"></td>
                 <td ng-bind="calculation.date"></td>
                 <td ng-bind="calculation.mode"></td>

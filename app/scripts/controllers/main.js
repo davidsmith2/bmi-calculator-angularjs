@@ -8,8 +8,17 @@
  * Controller of the bmiCalculatorAngularApp
  */
 angular.module('bmiCalculatorAngularApp')
+  .factory('CalculationService', ['$http', function($http) {
+    return {
+      index: function() {
+        return $http.get('http://localhost:3000/api/bmi');
+      },
+      create: function(item) {
+        return $http.post('http://localhost:3000/api/bmi', item);
+      }
+    };
+  }])
   .controller('MainCtrl', ['CalculationService', function (CalculationService) {
-    this.calculations = CalculationService.list();
     this.isValidForm = false;
     this.mode = 'standard';
     this.modes = {};
@@ -28,13 +37,32 @@ angular.module('bmiCalculatorAngularApp')
       }
     };
     var self = this;
+    var fetchData = function() {
+      return CalculationService
+        .index()
+        .then(function(response) {
+          self.calculations = response.data;
+        }, function(errorResponse) {
+          console.log('error while fetching data');
+        });
+    };
+    fetchData();
     this.calculateBMI = function() {
+      var kg, m;
       if (self.mode === 'standard') {
-        self.bmi = Number(self.modes.standard.lb) + Number(self.modes.standard.ft) + Number(self.modes.standard.in);
+        kg = Number(self.modes.standard.lb) * 0.45;
+        m = ((Number(self.modes.standard.ft) * 12) + Number(self.modes.standard.in)) * 0.025;
       } else if (self.mode === 'metric') {
-        self.bmi = Number(self.modes.metric.kg) + Number(self.modes.metric.cm);
+        kg = Number(self.modes.metric.kg);
+        m = Number(self.modes.metric.cm) / 100;
       }
-      CalculationService.add({date: new Date(), bmi: this.bmi, mode: self.mode});
+      self.bmi = (kg / Math.pow(m, 2)).toFixed(1);
+      CalculationService
+        .create({id: $.now(), date: new Date(), bmi: self.bmi, mode: self.mode})
+        .then(fetchData)
+        .then(function(response) {
+          console.log(response);
+        });
       self.modes[self.mode] = {};
       self.isValidForm = false;
       return self.bmi;
@@ -65,15 +93,4 @@ angular.module('bmiCalculatorAngularApp')
       }
       return errorType;
     }
-  }])
-  .factory('CalculationService', [function() {
-    var items = [];
-    return {
-      list: function() {
-        return items;
-      },
-      add: function(item) {
-        items.push(item);
-      }
-    };
   }]);
