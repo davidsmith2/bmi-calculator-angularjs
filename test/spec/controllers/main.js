@@ -1,5 +1,21 @@
 'use strict';
 
+// fake data service
+module(function($provide) {
+  var data = [];
+  $provide.service('DataService', function() {
+    this.fetchItem = function(id) {
+      return _.find(data, function(o) { o.id === id; });
+    };
+    this.fetchList = function() {
+      return data;
+    };
+    this.saveItem = function(item) {
+      data.push(item);
+    };
+  });
+});
+
 describe('Controller: MainCtrl', function () {
 
   // load the controller's module
@@ -7,44 +23,25 @@ describe('Controller: MainCtrl', function () {
 
   var mainCtrl,
     scope,
-    mockBMIService;
-
-  beforeEach(module(function($provide) {
-    var data = [];
-    mockBMIService = {
-      index: function() {
-        var dfd = $.Deferred();
-        dfd.resolve(data);
-        return dfd.promise();
-      },
-      create: function(item) {
-        var dfd = $.Deferred();
-        data.push(item);
-        dfd.resolve('success');
-        return dfd.promise();
-      },
-      show: function(id) {
-        var dfd = $.Deferred();
-        dfd.resolve(_.find(data, function(o) { o.id === id; }));
-        return dfd.promise();
-      }
-    };
-    $provide.value('BMIService', mockBMIService);
-  }));
+    ds;
 
   // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
+  beforeEach(inject(function ($controller, $rootScope, DataService) {
     scope = $rootScope.$new();
-    mainCtrl = $controller('MainCtrl', {
-      $scope: scope
-    });
+    ds = DataService;
+    mainCtrl = $controller('MainCtrl');
     mainCtrl.model = {};
   }));
 
-  it('should use the service', inject(function(BMIService) {
-    spyOn(BMIService, 'create');
-    mainCtrl.saveBMI();
-    expect(BMIService.create).toHaveBeenCalled();
-  }));
+  it('should use the service', function() {
+    expect(typeof ds.fetchList).toEqual('function');
+  });
+
+  xit('should use the service', function() {
+    spyOn(ds, 'fetchList');
+    spyOn(ds, 'fetchItem');
+    expect(ds.fetchList).toHaveBeenCalled();
+    expect(ds.fetchItem).toHaveBeenCalled();
+  });
 
 });

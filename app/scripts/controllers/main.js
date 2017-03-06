@@ -37,15 +37,13 @@ angular.module('bmiCalculatorAngularApp')
       }
     };
   }])
-  .controller('MainCtrl', ['BMIService', 'HelpService', function (BMIService, HelpService) {
-    var self = this;
+  .factory('DataService', ['BMIService', function(BMIService) {
     var fetchList = function() {
       return BMIService
         .index()
         .then(function(response) {
-          self.list = response.data;
-        }, function(errorResponse) {
-          console.log(errorResponse);
+          this.list = response.data;
+        }.bind(this), function(errorResponse) {
           console.log('error while fetching list');
         });
     };
@@ -53,12 +51,28 @@ angular.module('bmiCalculatorAngularApp')
       return BMIService
         .show(id)
         .then(function(response) {
-          self.item = response.data;
-        }, function(errorResponse) {
-          console.log(errorResponse);
+          this.item = response.data;
+        }.bind(this), function(errorResponse) {
           console.log('error while fetching item');
         });
     };
+    var saveItem = function(item) {
+      BMIService
+        .create(item)
+        .then(_.bind(fetchItem, this, 'latest'))
+        .then(_.bind(fetchList, this))
+        .then(function(response) {
+          this.model = {};
+        }.bind(this));
+    };
+    return {
+      fetchList: fetchList,
+      fetchItem: fetchItem,
+      saveItem: saveItem
+    };
+  }])
+  .controller('MainCtrl', ['HelpService', 'DataService', function (HelpService, DataService) {
+    var self = this;
     this.getHelpBlock = function(error) {
       return HelpService[this.getErrorType(error)];
     };
@@ -80,15 +94,8 @@ angular.module('bmiCalculatorAngularApp')
       return self.model && self.model.mode && self.model.mode === mode;
     };
     this.saveBMI = function() {
-      BMIService
-        .create(Object.assign({}, {id: $.now().toString(), date: new Date()}, self.model))
-        .then(_.partial(fetchItem, 'latest'))
-        .then(fetchList)
-        .then(function(response) {
-          console.log(response);
-          self.model = {};
-        });
+      DataService.saveItem.call(self, Object.assign({}, {id: $.now().toString(), date: new Date()}, self.model));
     };
-    fetchList();
-    fetchItem('latest');
+    DataService.fetchList.call(this);
+    DataService.fetchItem.call(this, 'latest');
   }]);
