@@ -1,20 +1,21 @@
+<nav class="col-sm-12" ng-include src="'views/nav.html'"></nav>
 <div class="col-sm-12">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">Item</h2>
     </div>
     <div class="panel-body">
-      <dl ng-show="detailCtrl.item.bmi">
+      <dl ng-show="ctrl.item.bmi">
         <dt>ID</dt>
-        <dd ng-bind="detailCtrl.item.id"></dd>
+        <dd ng-bind="ctrl.item.id"></dd>
         <dt>Date</dt>
-        <dd ng-bind="detailCtrl.item.id | date: 'medium'"></dd>
+        <dd ng-bind="ctrl.item.id | date: 'medium'"></dd>
         <dt>BMI</dt>
-        <dd ng-bind="detailCtrl.item.bmi"></dd>
+        <dd ng-bind="ctrl.item.bmi"></dd>
         <dt>Mode</dt>
-        <dd ng-bind="detailCtrl.item.mode"></dd>
+        <dd ng-bind="ctrl.item.mode"></dd>
       </dl>
-      <span ng-show="!detailCtrl.item.bmi">No data</span>
+      <span ng-show="!ctrl.item.bmi">No data</span>
     </div>
   </div>
 </div>

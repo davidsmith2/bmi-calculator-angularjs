@@ -1,21 +1,22 @@
+<nav class="col-sm-12" ng-include src="'views/nav.html'"></nav>
 <div class="col-sm-6">
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2 class="panel-title">Form</h2>
     </div>
     <div class="panel-body">
-      <form class="form-horizontal" name="form" ng-submit="listCtrl.saveBMI(listCtrl.model)">
+      <form class="form-horizontal" name="form" ng-submit="ctrl.saveBMI(ctrl.model)">
         <div
           class="form-group"
-          ng-class="listCtrl.getHelpBlock(form.mode.$error).className"
+          ng-class="ctrl.getHelpBlock(form.mode.$error).className"
         >
           <div class="col-sm-6">
             <div class="radio">
               <label>
                 <input
                   name="mode"
-                  ng-model="listCtrl.model.mode"
-                  required="listCtrl.isMode('standard')"
+                  ng-model="ctrl.model.mode"
+                  required="ctrl.isMode('standard')"
                   type="radio"
                   value="standard"
                 >
@@ -28,8 +29,8 @@
               <label>
                 <input
                   name="mode"
-                  ng-model="listCtrl.model.mode"
-                  required="listCtrl.isMode('metric')"
+                  ng-model="ctrl.model.mode"
+                  required="ctrl.isMode('metric')"
                   type="radio"
                   value="metric"
                 >
@@ -40,16 +41,16 @@
           <div class="col-sm-12">
                 <span
                   class="help-block"
-                  ng-bind="listCtrl.getHelpBlock(form.mode.$error).msg"
-                  ng-show="listCtrl.showHelpBlock(form.mode.$error)"
+                  ng-bind="ctrl.getHelpBlock(form.mode.$error).msg"
+                  ng-show="ctrl.showHelpBlock(form.mode.$error)"
                 >
                 </span>
           </div>
         </div>
-        <ng-form name="standard" ng-show="listCtrl.isMode('standard')">
+        <ng-form name="standard" ng-show="ctrl.isMode('standard')">
           <div
             class="form-group"
-            ng-class="listCtrl.getHelpBlock(form.standard.lb.$error).className"
+            ng-class="ctrl.getHelpBlock(form.standard.lb.$error).className"
           >
             <label class="col-sm-2 control-label pull-right" for="lb">lb</label>
             <div class="col-sm-10 pull-left">
@@ -57,23 +58,23 @@
                 class="form-control"
                 id="lb"
                 name="lb"
-                ng-model="listCtrl.model.lb"
+                ng-model="ctrl.model.lb"
                 ng-pattern="/^[0-9]{1,7}$/"
                 placeholder="e.g., 175"
-                ng-required="listCtrl.isMode('standard')"
+                ng-required="ctrl.isMode('standard')"
                 type="number"
               >
               <span
                 class="help-block"
-                ng-bind="listCtrl.getHelpBlock(form.standard.lb.$error).msg"
-                ng-show="listCtrl.showHelpBlock(form.standard.lb.$error)"
+                ng-bind="ctrl.getHelpBlock(form.standard.lb.$error).msg"
+                ng-show="ctrl.showHelpBlock(form.standard.lb.$error)"
               >
                   </span>
             </div>
           </div>
           <div
             class="form-group"
-            ng-class="listCtrl.getHelpBlock(form.standard.ft.$error).className"
+            ng-class="ctrl.getHelpBlock(form.standard.ft.$error).className"
           >
             <label class="col-sm-2 control-label pull-right" for="ft">ft</label>
             <div class="col-sm-10 pull-left">
@@ -82,22 +83,22 @@
                 id="ft"
                 name="ft"
                 ng-pattern="/^[0-9]{1,7}$/"
-                ng-model="listCtrl.model.ft"
+                ng-model="ctrl.model.ft"
                 placeholder="e.g., 5"
-                ng-required="listCtrl.isMode('standard')"
+                ng-required="ctrl.isMode('standard')"
                 type="number"
               >
               <span
                 class="help-block"
-                ng-bind="listCtrl.getHelpBlock(form.standard.ft.$error).msg"
-                ng-show="listCtrl.showHelpBlock(form.standard.ft.$error)"
+                ng-bind="ctrl.getHelpBlock(form.standard.ft.$error).msg"
+                ng-show="ctrl.showHelpBlock(form.standard.ft.$error)"
               >
                 </span>
             </div>
           </div>
           <div
             class="form-group"
-            ng-class="listCtrl.getHelpBlock(form.standard.in.$error).className"
+            ng-class="ctrl.getHelpBlock(form.standard.in.$error).className"
           >
             <label class="col-sm-2 control-label pull-right" for="in">in</label>
             <div class="col-sm-10 pull-left">
@@ -106,59 +107,59 @@
                 id="in"
                 name="in"
                 ng-pattern="/^[0-9]{1,7}$/"
-                ng-model="listCtrl.model.in"
+                ng-model="ctrl.model.in"
                 placeholder="e.g., 8"
-                ng-required="listCtrl.isMode('standard')"
+                ng-required="ctrl.isMode('standard')"
                 type="number"
               >
               <span
                 class="help-block"
-                ng-bind="listCtrl.getHelpBlock(form.standard.in.$error).msg"
-                ng-show="listCtrl.showHelpBlock(form.standard.in.$error)"
+                ng-bind="ctrl.getHelpBlock(form.standard.in.$error).msg"
+                ng-show="ctrl.showHelpBlock(form.standard.in.$error)"
               >
                 </span>
             </div>
           </div>
         </ng-form>
-        <ng-form name="metric" ng-show="listCtrl.isMode('metric')">
-          <div class="form-group" ng-class="listCtrl.getHelpBlock(form.metric.kg.$error).className">
+        <ng-form name="metric" ng-show="ctrl.isMode('metric')">
+          <div class="form-group" ng-class="ctrl.getHelpBlock(form.metric.kg.$error).className">
             <label class="col-sm-2 control-label pull-right" for="kg">kg</label>
             <div class="col-sm-10 pull-left">
               <input
                 class="form-control"
                 id="kg"
                 name="kg"
-                ng-model="listCtrl.model.kg"
+                ng-model="ctrl.model.kg"
                 ng-pattern="/^[0-9]{1,7}$/"
                 placeholder="e.g., 79"
-                ng-required="listCtrl.isMode('metric')"
+                ng-required="ctrl.isMode('metric')"
                 type="number"
               >
               <span
                 class="help-block"
-                ng-bind="listCtrl.getHelpBlock(form.metric.kg.$error).msg"
-                ng-show="listCtrl.showHelpBlock(form.metric.kg.$error)"
+                ng-bind="ctrl.getHelpBlock(form.metric.kg.$error).msg"
+                ng-show="ctrl.showHelpBlock(form.metric.kg.$error)"
               >
                 </span>
             </div>
           </div>
-          <div class="form-group" ng-class="listCtrl.getHelpBlock(form.metric.cm.$error).className">
+          <div class="form-group" ng-class="ctrl.getHelpBlock(form.metric.cm.$error).className">
             <label class="col-sm-2 control-label pull-right" for="cm">cm</label>
             <div class="col-sm-10 pull-left">
               <input
                 class="form-control"
                 id="cm"
                 name="cm"
-                ng-model="listCtrl.model.cm"
+                ng-model="ctrl.model.cm"
                 ng-pattern="/^[0-9]{1,7}$/"
                 placeholder="e.g., 173"
-                ng-required="listCtrl.isMode('metric')"
+                ng-required="ctrl.isMode('metric')"
                 type="number"
               >
               <span
                 class="help-block"
-                ng-bind="listCtrl.getHelpBlock(form.metric.cm.$error).msg"
-                ng-show="listCtrl.showHelpBlock(form.metric.cm.$error)"
+                ng-bind="ctrl.getHelpBlock(form.metric.cm.$error).msg"
+                ng-show="ctrl.showHelpBlock(form.metric.cm.$error)"
               >
                 </span>
             </div>
@@ -193,7 +194,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="item in listCtrl.filteredList">
+        <tr ng-repeat="item in ctrl.filteredList">
           <td>
             <a href="#!/list/{{item.id}}" ng-bind="item.id"></a>
           </td>
@@ -203,7 +204,7 @@
         </tbody>
       </table>
       <div class="row">
-        <button class="btn btn-default center-block" ng-click="listCtrl.showMoreItems()" ng-disabled="listCtrl.noMoreItems()">Show more</button>
+        <button class="btn btn-default center-block" ng-click="ctrl.showMoreItems()" ng-disabled="ctrl.noMoreItems()">Show more</button>
       </div>
     </div>
   </div>

@@ -17,12 +17,12 @@ angular
       .when('/list', {
         templateUrl: 'views/list.html',
         controller: 'ListCtrl',
-        controllerAs: 'listCtrl'
+        controllerAs: 'ctrl'
       })
       .when('/list/:id', {
         templateUrl: 'views/detail.html',
         controller: 'DetailCtrl',
-        controllerAs: 'detailCtrl'
+        controllerAs: 'ctrl'
       })
       .otherwise({
         redirectTo: '/'

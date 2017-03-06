@@ -43,6 +43,7 @@ angular.module('bmiCalculatorAngularApp')
     'ListCtrl', ['BMIService', 'HelpService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter',
       function(BMIService, HelpService, orderByFilter, limitToFilter, timeAgoFilter) {
         var self = this;
+        this.level = 1;
         this.rows = 2;
         this.currentLimit = this.rows;
         this.list = [];
@@ -106,6 +107,7 @@ angular.module('bmiCalculatorAngularApp')
   }])
   .controller('DetailCtrl', ['$routeParams', 'BMIService', function($routeParams, BMIService) {
     var self = this;
+    this.level = 2;
     this.item = {};
     this.fetchItem = function (id) {
       return BMIService
