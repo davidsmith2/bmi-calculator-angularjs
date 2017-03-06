@@ -28,10 +28,9 @@ angular.module('bmiCalculatorAngularApp')
     'ListCtrl', ['BMIService', 'HelpService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter',
       function(BMIService, HelpService, orderByFilter, limitToFilter, timeAgoFilter) {
         var self = this;
-        this.level = 1;
+        this.list = [];
         this.rows = 2;
         this.currentLimit = this.rows;
-        this.list = [];
         this.fetchList = function() {
           return BMIService
             .index()

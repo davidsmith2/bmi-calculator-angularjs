@@ -10,7 +10,6 @@
 angular.module('bmiCalculatorAngularApp')
   .controller('DetailCtrl', ['$routeParams', 'BMIService', function($routeParams, BMIService) {
     var self = this;
-    this.level = 2;
     this.item = {};
     this.fetchItem = function (id) {
       return BMIService
