@@ -62,6 +62,8 @@ angular.module('bmiCalculatorAngularApp')
         .create(item)
         .then(function() {
           self.model = {};
+        }, function(errorResponse) {
+          console.log('error while creating item');
         });
     };
     this.getHelpBlock = function(error) {
