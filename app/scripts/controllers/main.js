@@ -39,7 +39,7 @@ angular.module('bmiCalculatorAngularApp')
   }])
   .controller('MainCtrl', ['HelpService', 'BMIService', function (HelpService, BMIService) {
     var self = this;
-    var fetchList = function() {
+    this.fetchList = function() {
       return BMIService
         .index()
         .then(function(response) {
@@ -48,7 +48,7 @@ angular.module('bmiCalculatorAngularApp')
           console.log('error while fetching list');
         });
     };
-    var fetchItem = function (id) {
+    this.fetchItem = function (id) {
       return BMIService
         .show(id)
         .then(function(response) {
@@ -57,7 +57,7 @@ angular.module('bmiCalculatorAngularApp')
           console.log('error while fetching item');
         });
     };
-    var saveItem = function(item) {
+    this.saveItem = function(item) {
       return BMIService
         .create(item)
         .then(function() {
@@ -86,11 +86,12 @@ angular.module('bmiCalculatorAngularApp')
     this.isMode = function(mode) {
       return self.model && self.model.mode && self.model.mode === mode;
     };
-    this.saveBMI = function() {
-      saveItem(Object.assign({}, {id: $.now().toString(), date: new Date()}, self.model))
-        .then(fetchList)
-        .then(_.partial(fetchItem, 'latest'));
+    this.saveBMI = function(data) {
+      self
+        .saveItem(_.extend({}, {id: $.now().toString(), date: new Date()}, data))
+        .then(self.fetchList)
+        .then(_.partial(self.fetchItem, 'latest'));
     };
-    fetchList();
-    fetchItem('latest');
+    this.fetchList();
+    this.fetchItem('latest');
   }]);

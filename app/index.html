@@ -31,7 +31,7 @@
                 <h2 class="panel-title">Form</h2>
               </div>
               <div class="panel-body">
-                <form class="form-horizontal" name="form" ng-submit="mainCtrl.saveBMI()">
+                <form class="form-horizontal" name="form" ng-submit="mainCtrl.saveBMI(mainCtrl.model)">
                   <div
                     class="form-group"
                     ng-class="mainCtrl.getHelpBlock(form.mode.$error).className"
