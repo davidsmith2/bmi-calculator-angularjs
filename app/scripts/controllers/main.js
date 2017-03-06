@@ -39,6 +39,26 @@ angular.module('bmiCalculatorAngularApp')
   }])
   .controller('MainCtrl', ['BMIService', 'HelpService', function (BMIService, HelpService) {
     var self = this;
+    var fetchList = function() {
+      return BMIService
+        .index()
+        .then(function(response) {
+          self.list = response.data;
+        }, function(errorResponse) {
+          console.log(errorResponse);
+          console.log('error while fetching list');
+        });
+    };
+    var fetchItem = function (id) {
+      return BMIService
+        .show(id)
+        .then(function(response) {
+          self.item = response.data;
+        }, function(errorResponse) {
+          console.log(errorResponse);
+          console.log('error while fetching item');
+        });
+    };
     this.getHelpBlock = function(error) {
       return HelpService[this.getErrorType(error)];
     };
@@ -67,26 +87,6 @@ angular.module('bmiCalculatorAngularApp')
         .then(function(response) {
           console.log(response);
           self.model = {};
-        });
-    };
-    var fetchList = function() {
-      return BMIService
-        .index()
-        .then(function(response) {
-          self.list = response.data;
-        }, function(errorResponse) {
-          console.log(errorResponse);
-          console.log('error while fetching list');
-        });
-    };
-    var fetchItem = function (id) {
-      return BMIService
-        .show(id)
-        .then(function(response) {
-          self.item = response.data;
-        }, function(errorResponse) {
-          console.log(errorResponse);
-          console.log('error while fetching item');
         });
     };
     fetchList();
