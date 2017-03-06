@@ -2,25 +2,12 @@
 
 /**
  * @ngdoc function
- * @name bmiCalculatorAngularApp.controller:MainCtrl
+ * @name bmiCalculatorAngularApp.controller:ListCtrl
  * @description
- * # MainCtrl
+ * # ListCtrl
  * Controller of the bmiCalculatorAngularApp
  */
 angular.module('bmiCalculatorAngularApp')
-  .factory('BMIService', ['$http', function($http) {
-    return {
-      index: function() {
-        return $http.get('http://localhost:3000/api/bmi');
-      },
-      create: function(data) {
-        return $http.post('http://localhost:3000/api/bmi', data);
-      },
-      show: function(id) {
-        return $http.get('http://localhost:3000/api/bmi/' + id);
-      }
-    };
-  }])
   .factory('HelpService', [function() {
     return {
       success: {
@@ -36,8 +23,6 @@ angular.module('bmiCalculatorAngularApp')
         className: 'has-error'
       }
     };
-  }])
-  .controller('MainCtrl', [function () {
   }])
   .controller(
     'ListCtrl', ['BMIService', 'HelpService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter',
@@ -104,21 +89,6 @@ angular.module('bmiCalculatorAngularApp')
           });
         };
         this.fetchList();
-  }])
-  .controller('DetailCtrl', ['$routeParams', 'BMIService', function($routeParams, BMIService) {
-    var self = this;
-    this.level = 2;
-    this.item = {};
-    this.fetchItem = function (id) {
-      return BMIService
-        .show(id)
-        .then(function(response) {
-          self.item = response.data;
-        }, function(errorResponse) {
-          console.log('error while fetching item');
-        });
-    };
-    this.fetchItem($routeParams.id);
   }])
   .filter('timeAgo', [function() {
     var ONE_MINUTE = 1000 * 60;
