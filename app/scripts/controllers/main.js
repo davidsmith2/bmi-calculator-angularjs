@@ -8,25 +8,16 @@
  * Controller of the bmiCalculatorAngularApp
  */
 angular.module('bmiCalculatorAngularApp')
-  .factory('CalculationService', ['$http', function($http) {
+  .factory('BMIService', ['$http', function($http) {
     return {
       index: function() {
         return $http.get('http://localhost:3000/api/bmi');
       },
-      create: function(item) {
-        return $http.post('http://localhost:3000/api/bmi', item);
+      create: function(data) {
+        return $http.post('http://localhost:3000/api/bmi', data);
       },
-      calculate: function(model) {
-        var kg, m;
-        if (model.mode === 'standard') {
-          kg = model.lb * 0.45;
-          m = ((model.ft * 12) + model.in) * 0.025;
-        }
-        if (model.mode === 'metric') {
-          kg = model.kg;
-          m = model.cm / 100;
-        }
-        return Number((kg / Math.pow(m, 2)).toFixed(1));
+      show: function(id) {
+        return $http.get('http://localhost:3000/api/bmi/' + id);
       }
     };
   }])
@@ -46,18 +37,8 @@ angular.module('bmiCalculatorAngularApp')
       }
     };
   }])
-  .controller('MainCtrl', ['CalculationService', 'HelpService', function (CalculationService, HelpService) {
+  .controller('MainCtrl', ['BMIService', 'HelpService', function (BMIService, HelpService) {
     var self = this;
-    this.calculateBMI = function() {
-      self.bmi = CalculationService.calculate(self.model);
-      CalculationService
-        .create(Object.assign({}, {id: $.now().toString(), date: new Date()}, {bmi: self.bmi}, self.model))
-        .then(fetchData)
-        .then(function(response) {
-          console.log(response);
-          self.model = {};
-        });
-    };
     this.getHelpBlock = function(error) {
       return HelpService[this.getErrorType(error)];
     };
@@ -78,15 +59,36 @@ angular.module('bmiCalculatorAngularApp')
     this.isMode = function(mode) {
       return self.model && self.model.mode && self.model.mode === mode;
     };
-    var fetchData = function() {
-      return CalculationService
-        .index()
+    this.saveBMI = function() {
+      BMIService
+        .create(Object.assign({}, {id: $.now().toString(), date: new Date()}, self.model))
+        .then(_.partial(fetchItem, 'latest'))
+        .then(fetchList)
         .then(function(response) {
-          self.calculations = response.data;
-        }, function(errorResponse) {
-          console.log(errorResponse);
-          console.log('error while fetching data');
+          console.log(response);
+          self.model = {};
         });
     };
-    fetchData();
+    var fetchList = function() {
+      return BMIService
+        .index()
+        .then(function(response) {
+          self.list = response.data;
+        }, function(errorResponse) {
+          console.log(errorResponse);
+          console.log('error while fetching list');
+        });
+    };
+    var fetchItem = function (id) {
+      return BMIService
+        .show(id)
+        .then(function(response) {
+          self.item = response.data;
+        }, function(errorResponse) {
+          console.log(errorResponse);
+          console.log('error while fetching item');
+        });
+    };
+    fetchList();
+    fetchItem('latest');
   }]);
