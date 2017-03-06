@@ -37,17 +37,18 @@ angular.module('bmiCalculatorAngularApp')
       }
     };
   }])
-  .controller('MainCtrl', ['HelpService', 'BMIService', function (HelpService, BMIService) {
+  .controller('MainCtrl', ['HelpService', 'BMIService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter', function (HelpService, BMIService, orderByFilter, limitToFilter, timeAgoFilter) {
     var self = this;
-    this.list = [];
-    this.item = [];
     this.rows = 2;
     this.currentLimit = this.rows;
+    this.list = [];
+    this.item = {};
     this.fetchList = function() {
       return BMIService
         .index()
         .then(function(response) {
           self.list = response.data;
+          self.filteredList = self.filterList(self.list);
         }, function(errorResponse) {
           console.log('error while fetching list');
         });
@@ -92,16 +93,44 @@ angular.module('bmiCalculatorAngularApp')
     };
     this.saveBMI = function(data) {
       self
-        .saveItem(_.extend({}, {id: new Date().getTime()}, data))
+        .saveItem(_.assign({}, {id: new Date().getTime()}, data))
         .then(self.fetchList)
         .then(_.partial(self.fetchItem, 'latest'));
     };
     this.showMoreItems = function() {
       self.currentLimit = self.currentLimit + self.rows;
+      self.filteredList = self.filterList(self.list);
     };
     this.noMoreItems = function() {
       return self.list.length - self.currentLimit <= 0;
     };
+    this.filterList = function() {
+      return _.map(limitToFilter(orderByFilter(self.list, '-id'), self.currentLimit), function(o) {
+        return _.assign({}, o, {timeAgo: timeAgoFilter(o.id)});
+      });
+    };
     this.fetchList();
     this.fetchItem('latest');
+  }])
+  .filter('timeAgo', [function() {
+    var ONE_MINUTE = 1000 * 60;
+    var ONE_HOUR = ONE_MINUTE * 60;
+    var ONE_DAY = ONE_HOUR * 24;
+    var ONE_WEEK = ONE_DAY * 7;
+    return function(ts) {
+      var now = new Date().getTime();
+      var diff = now - ts;
+      if (diff < ONE_MINUTE) {
+        return 'seconds ago';
+      }
+      if (diff - ts < ONE_HOUR) {
+        return 'minutes ago';
+      }
+      if (diff - ts < ONE_DAY) {
+        return 'hours ago';
+      }
+      if (diff - ts < ONE_WEEK) {
+        return 'days ago';
+      }
+    };
   }]);

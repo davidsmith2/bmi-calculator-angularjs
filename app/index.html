@@ -234,18 +234,14 @@
                 <table class="table">
                   <thead>
                   <tr>
-                    <th>ID</th>
-                    <th>Date</th>
+                    <th>Time ago</th>
                     <th>BMI</th>
-                    <th>Mode</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-repeat="item in mainCtrl.list | orderBy: '-id' | limitTo: mainCtrl.currentLimit">
-                    <td ng-bind="item.id"></td>
-                    <td ng-bind="item.id | date: 'medium'"></td>
+                  <tr ng-repeat="item in mainCtrl.filteredList">
+                    <td ng-bind="item.timeAgo"></td>
                     <td ng-bind="item.bmi"></td>
-                    <td ng-bind="item.mode"></td>
                   </tr>
                   </tbody>
                 </table>
