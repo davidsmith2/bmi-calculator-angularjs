@@ -1,0 +1,210 @@
+<div class="col-sm-6">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Form</h2>
+    </div>
+    <div class="panel-body">
+      <form class="form-horizontal" name="form" ng-submit="listCtrl.saveBMI(listCtrl.model)">
+        <div
+          class="form-group"
+          ng-class="listCtrl.getHelpBlock(form.mode.$error).className"
+        >
+          <div class="col-sm-6">
+            <div class="radio">
+              <label>
+                <input
+                  name="mode"
+                  ng-model="listCtrl.model.mode"
+                  required="listCtrl.isMode('standard')"
+                  type="radio"
+                  value="standard"
+                >
+                Standard
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="radio">
+              <label>
+                <input
+                  name="mode"
+                  ng-model="listCtrl.model.mode"
+                  required="listCtrl.isMode('metric')"
+                  type="radio"
+                  value="metric"
+                >
+                Metric
+              </label>
+            </div>
+          </div>
+          <div class="col-sm-12">
+                <span
+                  class="help-block"
+                  ng-bind="listCtrl.getHelpBlock(form.mode.$error).msg"
+                  ng-show="listCtrl.showHelpBlock(form.mode.$error)"
+                >
+                </span>
+          </div>
+        </div>
+        <ng-form name="standard" ng-show="listCtrl.isMode('standard')">
+          <div
+            class="form-group"
+            ng-class="listCtrl.getHelpBlock(form.standard.lb.$error).className"
+          >
+            <label class="col-sm-2 control-label pull-right" for="lb">lb</label>
+            <div class="col-sm-10 pull-left">
+              <input
+                class="form-control"
+                id="lb"
+                name="lb"
+                ng-model="listCtrl.model.lb"
+                ng-pattern="/^[0-9]{1,7}$/"
+                placeholder="e.g., 175"
+                ng-required="listCtrl.isMode('standard')"
+                type="number"
+              >
+              <span
+                class="help-block"
+                ng-bind="listCtrl.getHelpBlock(form.standard.lb.$error).msg"
+                ng-show="listCtrl.showHelpBlock(form.standard.lb.$error)"
+              >
+                  </span>
+            </div>
+          </div>
+          <div
+            class="form-group"
+            ng-class="listCtrl.getHelpBlock(form.standard.ft.$error).className"
+          >
+            <label class="col-sm-2 control-label pull-right" for="ft">ft</label>
+            <div class="col-sm-10 pull-left">
+              <input
+                class="form-control"
+                id="ft"
+                name="ft"
+                ng-pattern="/^[0-9]{1,7}$/"
+                ng-model="listCtrl.model.ft"
+                placeholder="e.g., 5"
+                ng-required="listCtrl.isMode('standard')"
+                type="number"
+              >
+              <span
+                class="help-block"
+                ng-bind="listCtrl.getHelpBlock(form.standard.ft.$error).msg"
+                ng-show="listCtrl.showHelpBlock(form.standard.ft.$error)"
+              >
+                </span>
+            </div>
+          </div>
+          <div
+            class="form-group"
+            ng-class="listCtrl.getHelpBlock(form.standard.in.$error).className"
+          >
+            <label class="col-sm-2 control-label pull-right" for="in">in</label>
+            <div class="col-sm-10 pull-left">
+              <input
+                class="form-control"
+                id="in"
+                name="in"
+                ng-pattern="/^[0-9]{1,7}$/"
+                ng-model="listCtrl.model.in"
+                placeholder="e.g., 8"
+                ng-required="listCtrl.isMode('standard')"
+                type="number"
+              >
+              <span
+                class="help-block"
+                ng-bind="listCtrl.getHelpBlock(form.standard.in.$error).msg"
+                ng-show="listCtrl.showHelpBlock(form.standard.in.$error)"
+              >
+                </span>
+            </div>
+          </div>
+        </ng-form>
+        <ng-form name="metric" ng-show="listCtrl.isMode('metric')">
+          <div class="form-group" ng-class="listCtrl.getHelpBlock(form.metric.kg.$error).className">
+            <label class="col-sm-2 control-label pull-right" for="kg">kg</label>
+            <div class="col-sm-10 pull-left">
+              <input
+                class="form-control"
+                id="kg"
+                name="kg"
+                ng-model="listCtrl.model.kg"
+                ng-pattern="/^[0-9]{1,7}$/"
+                placeholder="e.g., 79"
+                ng-required="listCtrl.isMode('metric')"
+                type="number"
+              >
+              <span
+                class="help-block"
+                ng-bind="listCtrl.getHelpBlock(form.metric.kg.$error).msg"
+                ng-show="listCtrl.showHelpBlock(form.metric.kg.$error)"
+              >
+                </span>
+            </div>
+          </div>
+          <div class="form-group" ng-class="listCtrl.getHelpBlock(form.metric.cm.$error).className">
+            <label class="col-sm-2 control-label pull-right" for="cm">cm</label>
+            <div class="col-sm-10 pull-left">
+              <input
+                class="form-control"
+                id="cm"
+                name="cm"
+                ng-model="listCtrl.model.cm"
+                ng-pattern="/^[0-9]{1,7}$/"
+                placeholder="e.g., 173"
+                ng-required="listCtrl.isMode('metric')"
+                type="number"
+              >
+              <span
+                class="help-block"
+                ng-bind="listCtrl.getHelpBlock(form.metric.cm.$error).msg"
+                ng-show="listCtrl.showHelpBlock(form.metric.cm.$error)"
+              >
+                </span>
+            </div>
+          </div>
+        </ng-form>
+        <div class="form-group">
+          <div class="col-sm-12">
+            <input
+              class="btn btn-primary pull-right"
+              ng-disabled="form.$invalid"
+              type="submit"
+              value="Save"
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="col-sm-6">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">List</h2>
+    </div>
+    <div class="panel-body">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Time ago</th>
+          <th>BMI</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in listCtrl.filteredList">
+          <td>
+            <a href="#!/list/{{item.id}}" ng-bind="item.id"></a>
+          </td>
+          <td ng-bind="item.timeAgo"></td>
+          <td ng-bind="item.bmi"></td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="row">
+        <button class="btn btn-default center-block" ng-click="listCtrl.showMoreItems()" ng-disabled="listCtrl.noMoreItems()">Show more</button>
+      </div>
+    </div>
+  </div>
+</div>

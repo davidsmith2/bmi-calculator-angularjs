@@ -1,0 +1,20 @@
+<div class="col-sm-12">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2 class="panel-title">Item</h2>
+    </div>
+    <div class="panel-body">
+      <dl ng-show="detailCtrl.item.bmi">
+        <dt>ID</dt>
+        <dd ng-bind="detailCtrl.item.id"></dd>
+        <dt>Date</dt>
+        <dd ng-bind="detailCtrl.item.id | date: 'medium'"></dd>
+        <dt>BMI</dt>
+        <dd ng-bind="detailCtrl.item.bmi"></dd>
+        <dt>Mode</dt>
+        <dd ng-bind="detailCtrl.item.mode"></dd>
+      </dl>
+      <span ng-show="!detailCtrl.item.bmi">No data</span>
+    </div>
+  </div>
+</div>
