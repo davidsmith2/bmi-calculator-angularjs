@@ -215,7 +215,7 @@
                   <dt>ID</dt>
                   <dd ng-bind="mainCtrl.item.id"></dd>
                   <dt>Date</dt>
-                  <dd ng-bind="mainCtrl.item.date"></dd>
+                  <dd ng-bind="mainCtrl.item.id | date: 'medium'"></dd>
                   <dt>BMI</dt>
                   <dd ng-bind="mainCtrl.item.bmi"></dd>
                   <dt>Mode</dt>
@@ -241,14 +241,17 @@
                   </tr>
                   </thead>
                   <tbody>
-                  <tr ng-repeat="item in mainCtrl.list | orderBy: '-date'">
+                  <tr ng-repeat="item in mainCtrl.list | orderBy: '-id' | limitTo: mainCtrl.currentLimit">
                     <td ng-bind="item.id"></td>
-                    <td ng-bind="item.date"></td>
+                    <td ng-bind="item.id | date: 'medium'"></td>
                     <td ng-bind="item.bmi"></td>
                     <td ng-bind="item.mode"></td>
                   </tr>
                   </tbody>
                 </table>
+                <div class="row">
+                  <button class="btn btn-default center-block" ng-click="mainCtrl.showMoreItems()" ng-disabled="mainCtrl.noMoreItems()">Show more</button>
+                </div>
               </div>
             </div>
           </div>

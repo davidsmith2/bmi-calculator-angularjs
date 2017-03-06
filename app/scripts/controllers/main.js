@@ -39,6 +39,10 @@ angular.module('bmiCalculatorAngularApp')
   }])
   .controller('MainCtrl', ['HelpService', 'BMIService', function (HelpService, BMIService) {
     var self = this;
+    this.list = [];
+    this.item = [];
+    this.rows = 2;
+    this.currentLimit = this.rows;
     this.fetchList = function() {
       return BMIService
         .index()
@@ -88,9 +92,15 @@ angular.module('bmiCalculatorAngularApp')
     };
     this.saveBMI = function(data) {
       self
-        .saveItem(_.extend({}, {id: $.now().toString(), date: new Date()}, data))
+        .saveItem(_.extend({}, {id: new Date().getTime()}, data))
         .then(self.fetchList)
         .then(_.partial(self.fetchItem, 'latest'));
+    };
+    this.showMoreItems = function() {
+      self.currentLimit = self.currentLimit + self.rows;
+    };
+    this.noMoreItems = function() {
+      return self.list.length - self.currentLimit <= 0;
     };
     this.fetchList();
     this.fetchItem('latest');
