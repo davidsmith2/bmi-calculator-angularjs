@@ -14,15 +14,28 @@ angular
   ])
   .config(function ($routeProvider) {
     $routeProvider
+      .when('/', {
+        redirectTo: '/list'
+      })
       .when('/list', {
         templateUrl: 'views/list.html',
         controller: 'ListCtrl',
-        controllerAs: 'ctrl'
+        controllerAs: 'ctrl',
+        resolve: {
+          pageName: function() {
+            return 'This is the list page';
+          }
+        }
       })
       .when('/list/:id', {
         templateUrl: 'views/detail.html',
         controller: 'DetailCtrl',
-        controllerAs: 'ctrl'
+        controllerAs: 'ctrl',
+        resolve: {
+          pageName: function() {
+            return 'This is the detail page';
+          }
+        }
       })
       .otherwise({
         redirectTo: '/'

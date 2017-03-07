@@ -25,13 +25,11 @@ angular.module('bmiCalculatorAngularApp')
     };
   }])
   .controller(
-    'ListCtrl', ['BMIService', 'HelpService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter',
-      function(BMIService, HelpService, orderByFilter, limitToFilter, timeAgoFilter) {
+    'ListCtrl', ['BMIService', 'HelpService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter', 'pageName',
+      function(BMIService, HelpService, orderByFilter, limitToFilter, timeAgoFilter, pageName) {
+        console.log(pageName);
         var self = this;
-        this.list = [];
-        this.rows = 2;
-        this.currentLimit = this.rows;
-        this.fetchList = function() {
+        var fetchList = function() {
           return BMIService
             .index()
             .then(function(response) {
@@ -41,7 +39,7 @@ angular.module('bmiCalculatorAngularApp')
               console.log('error while fetching list');
             });
         };
-        this.saveItem = function(item) {
+        var saveItem = function(item) {
           return BMIService
             .create(item)
             .then(function() {
@@ -50,11 +48,16 @@ angular.module('bmiCalculatorAngularApp')
               console.log('error while creating item');
             });
         };
+        this.filterList = function() {
+          return _.map(limitToFilter(orderByFilter(self.list, '-id'), self.currentLimit), function(o) {
+            return _.assign({}, o, {timeAgo: timeAgoFilter(o.id)});
+          });
+        };
         this.getHelpBlock = function(error) {
-          return HelpService[this.getErrorType(error)];
+          return HelpService[self.getErrorType(error)];
         };
         this.showHelpBlock = function(error) {
-          return this.getErrorType(error);
+          return self.getErrorType(error);
         };
         this.getErrorType = function(error) {
           var errorType;
@@ -71,9 +74,8 @@ angular.module('bmiCalculatorAngularApp')
           return self.model && self.model.mode && self.model.mode === mode;
         };
         this.saveBMI = function(data) {
-          self
-            .saveItem(_.assign({}, {id: new Date().getTime()}, data))
-            .then(self.fetchList);
+          saveItem(_.assign({}, {id: new Date().getTime()}, data))
+            .then(fetchList);
         };
         this.showMoreItems = function() {
           self.currentLimit = self.currentLimit + self.rows;
@@ -82,12 +84,10 @@ angular.module('bmiCalculatorAngularApp')
         this.noMoreItems = function() {
           return self.list.length - self.currentLimit <= 0;
         };
-        this.filterList = function() {
-          return _.map(limitToFilter(orderByFilter(self.list, '-id'), self.currentLimit), function(o) {
-            return _.assign({}, o, {timeAgo: timeAgoFilter(o.id)});
-          });
-        };
-        this.fetchList();
+        this.list = [];
+        this.rows = 2;
+        this.currentLimit = this.rows;
+        fetchList();
   }])
   .filter('timeAgo', [function() {
     var ONE_MINUTE = 1000 * 60;

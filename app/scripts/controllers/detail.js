@@ -8,10 +8,10 @@
  * Controller of the bmiCalculatorAngularApp
  */
 angular.module('bmiCalculatorAngularApp')
-  .controller('DetailCtrl', ['$routeParams', 'BMIService', function($routeParams, BMIService) {
+  .controller('DetailCtrl', ['$routeParams', 'BMIService', 'pageName', function($routeParams, BMIService, pageName) {
+    console.log(pageName);
     var self = this;
-    this.item = {};
-    this.fetchItem = function (id) {
+    var fetchItem = function (id) {
       return BMIService
         .show(id)
         .then(function(response) {
@@ -20,5 +20,6 @@ angular.module('bmiCalculatorAngularApp')
           console.log('error while fetching item');
         });
     };
-    this.fetchItem($routeParams.id);
+    this.item = {};
+    fetchItem($routeParams.id);
   }]);
