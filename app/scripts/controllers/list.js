@@ -87,6 +87,32 @@ angular.module('bmiCalculatorAngularApp')
         this.list = [];
         this.rows = 2;
         this.currentLimit = this.rows;
+        this.formGroups = {
+          standard: [
+            {
+              unit: 'lb',
+              placeholder: '175'
+            },
+            {
+              unit: 'ft',
+              placeholder: '5'
+            },
+            {
+              unit: 'in',
+              placeholder: '8'
+            }
+          ],
+          metric: [
+            {
+              unit: 'kg',
+              placeholder: '79'
+            },
+            {
+              unit: 'cm',
+              placeholder: '173'
+            }
+          ]
+        };
         fetchList();
   }])
   .filter('timeAgo', [function() {
@@ -110,4 +136,16 @@ angular.module('bmiCalculatorAngularApp')
         return 'days ago';
       }
     };
+  }])
+  .directive('numberInput', [function() {
+    return {
+      templateUrl: 'directives/number-input.html',
+      restrict: 'E',
+      link: function($scope, element, attrs) {
+        $scope.mode = attrs.mode;
+        $scope.getHelpBlock = $scope.ctrl.getHelpBlock;
+        $scope.showHelpBlock = $scope.ctrl.showHelpBlock;
+        $scope.isMode = $scope.ctrl.isMode;
+      }
+    }
   }]);

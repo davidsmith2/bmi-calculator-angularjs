@@ -1,0 +1,24 @@
+<div
+  class="form-group"
+  ng-class="getHelpBlock(form[mode][formGroup.unit].$error).className"
+>
+  <label class="col-sm-2 control-label pull-right" for="{{formGroup.unit}}" ng-bind="formGroup.unit"></label>
+  <div class="col-sm-10 pull-left">
+    <input
+      class="form-control"
+      id="{{formGroup.unit}}"
+      name="{{formGroup.unit}}"
+      ng-model="ctrl.model[formGroup.unit]"
+      ng-pattern="/^[0-9]{1,7}$/"
+      placeholder="e.g., {{formGroup.placeholder}}"
+      ng-required="isMode(mode)"
+      type="number"
+    >
+    <span
+      class="help-block"
+      ng-bind="getHelpBlock(form[mode][formGroup.unit].$error).msg"
+      ng-show="showHelpBlock(form[mode][formGroup.unit].$error)"
+    >
+    </span>
+  </div>
+</div>

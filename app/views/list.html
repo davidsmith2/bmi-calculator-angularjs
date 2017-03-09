@@ -47,121 +47,13 @@
           </div>
         </div>
         <ng-form name="standard" ng-show="ctrl.isMode('standard')">
-          <div
-            class="form-group"
-            ng-class="ctrl.getHelpBlock(form.standard.lb.$error).className"
-          >
-            <label class="col-sm-2 control-label pull-right" for="lb">lb</label>
-            <div class="col-sm-10 pull-left">
-              <input
-                class="form-control"
-                id="lb"
-                name="lb"
-                ng-model="ctrl.model.lb"
-                ng-pattern="/^[0-9]{1,7}$/"
-                placeholder="e.g., 175"
-                ng-required="ctrl.isMode('standard')"
-                type="number"
-              >
-              <span
-                class="help-block"
-                ng-bind="ctrl.getHelpBlock(form.standard.lb.$error).msg"
-                ng-show="ctrl.showHelpBlock(form.standard.lb.$error)"
-              >
-                  </span>
-            </div>
-          </div>
-          <div
-            class="form-group"
-            ng-class="ctrl.getHelpBlock(form.standard.ft.$error).className"
-          >
-            <label class="col-sm-2 control-label pull-right" for="ft">ft</label>
-            <div class="col-sm-10 pull-left">
-              <input
-                class="form-control"
-                id="ft"
-                name="ft"
-                ng-pattern="/^[0-9]{1,7}$/"
-                ng-model="ctrl.model.ft"
-                placeholder="e.g., 5"
-                ng-required="ctrl.isMode('standard')"
-                type="number"
-              >
-              <span
-                class="help-block"
-                ng-bind="ctrl.getHelpBlock(form.standard.ft.$error).msg"
-                ng-show="ctrl.showHelpBlock(form.standard.ft.$error)"
-              >
-                </span>
-            </div>
-          </div>
-          <div
-            class="form-group"
-            ng-class="ctrl.getHelpBlock(form.standard.in.$error).className"
-          >
-            <label class="col-sm-2 control-label pull-right" for="in">in</label>
-            <div class="col-sm-10 pull-left">
-              <input
-                class="form-control"
-                id="in"
-                name="in"
-                ng-pattern="/^[0-9]{1,7}$/"
-                ng-model="ctrl.model.in"
-                placeholder="e.g., 8"
-                ng-required="ctrl.isMode('standard')"
-                type="number"
-              >
-              <span
-                class="help-block"
-                ng-bind="ctrl.getHelpBlock(form.standard.in.$error).msg"
-                ng-show="ctrl.showHelpBlock(form.standard.in.$error)"
-              >
-                </span>
-            </div>
+          <div ng-repeat="formGroup in ctrl.formGroups.standard">
+            <number-input mode="standard"></number-input>
           </div>
         </ng-form>
         <ng-form name="metric" ng-show="ctrl.isMode('metric')">
-          <div class="form-group" ng-class="ctrl.getHelpBlock(form.metric.kg.$error).className">
-            <label class="col-sm-2 control-label pull-right" for="kg">kg</label>
-            <div class="col-sm-10 pull-left">
-              <input
-                class="form-control"
-                id="kg"
-                name="kg"
-                ng-model="ctrl.model.kg"
-                ng-pattern="/^[0-9]{1,7}$/"
-                placeholder="e.g., 79"
-                ng-required="ctrl.isMode('metric')"
-                type="number"
-              >
-              <span
-                class="help-block"
-                ng-bind="ctrl.getHelpBlock(form.metric.kg.$error).msg"
-                ng-show="ctrl.showHelpBlock(form.metric.kg.$error)"
-              >
-                </span>
-            </div>
-          </div>
-          <div class="form-group" ng-class="ctrl.getHelpBlock(form.metric.cm.$error).className">
-            <label class="col-sm-2 control-label pull-right" for="cm">cm</label>
-            <div class="col-sm-10 pull-left">
-              <input
-                class="form-control"
-                id="cm"
-                name="cm"
-                ng-model="ctrl.model.cm"
-                ng-pattern="/^[0-9]{1,7}$/"
-                placeholder="e.g., 173"
-                ng-required="ctrl.isMode('metric')"
-                type="number"
-              >
-              <span
-                class="help-block"
-                ng-bind="ctrl.getHelpBlock(form.metric.cm.$error).msg"
-                ng-show="ctrl.showHelpBlock(form.metric.cm.$error)"
-              >
-                </span>
-            </div>
+          <div ng-repeat="formGroup in ctrl.formGroups.metric">
+            <number-input mode="metric"></number-input>
           </div>
         </ng-form>
         <div class="form-group">
