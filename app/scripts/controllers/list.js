@@ -87,33 +87,73 @@ angular.module('bmiCalculatorAngularApp')
         this.list = [];
         this.rows = 2;
         this.currentLimit = this.rows;
-        this.formGroups = {
-          standard: [
-            {
-              unit: 'lb',
-              placeholder: '175'
-            },
-            {
-              unit: 'ft',
-              placeholder: '5'
-            },
-            {
-              unit: 'in',
-              placeholder: '8'
-            }
-          ],
-          metric: [
-            {
-              unit: 'kg',
-              placeholder: '79'
-            },
-            {
-              unit: 'cm',
-              placeholder: '173'
-            }
-          ]
-        };
+        this.forms = [
+          {
+            name: 'standard',
+            fields: [
+              {
+                name: 'lb',
+                placeholder: '175'
+              },
+              {
+                name: 'ft',
+                placeholder: '5'
+              },
+              {
+                name: 'in',
+                placeholder: '8'
+              }
+            ]
+          },
+          {
+            name: 'metric',
+            fields: [
+              {
+                name: 'kg',
+                placeholder: '79'
+              },
+              {
+                name: 'cm',
+                placeholder: '173'
+              }
+            ]
+          }
+        ];
         fetchList();
+  }])
+  .directive('dForm', function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'directives/form.html',
+      scope: {
+        ctrl: '=',
+        parentForm: '=',
+        childForm: '='
+      },
+      link: function(scope) {
+        console.log('ctrl: ', scope.ctrl);
+        console.log('parent form: ', scope.parentForm);
+        console.log('child form: ', scope.childForm);
+      }
+    };
+  })
+  .directive('dNumberInput', [function() {
+    return {
+      restrict: 'E',
+      templateUrl: 'directives/number-input.html',
+      scope: {
+        ctrl: '=',
+        field: '=',
+        parentForm: '=',
+        childFormName: '@'
+      },
+      link: function(scope) {
+        console.log('ctrl: ', scope.ctrl);
+        console.log('field: ', scope.field);
+        console.log('parent form: ', scope.parentForm);
+        console.log('child form name: ', scope.childFormName);
+      }
+    }
   }])
   .filter('timeAgo', [function() {
     var ONE_MINUTE = 1000 * 60;
@@ -136,16 +176,4 @@ angular.module('bmiCalculatorAngularApp')
         return 'days ago';
       }
     };
-  }])
-  .directive('numberInput', [function() {
-    return {
-      templateUrl: 'directives/number-input.html',
-      restrict: 'E',
-      link: function($scope, element, attrs) {
-        $scope.mode = attrs.mode;
-        $scope.getHelpBlock = $scope.ctrl.getHelpBlock;
-        $scope.showHelpBlock = $scope.ctrl.showHelpBlock;
-        $scope.isMode = $scope.ctrl.isMode;
-      }
-    }
   }]);

@@ -4,10 +4,10 @@
       <h2 class="panel-title">Form</h2>
     </div>
     <div class="panel-body">
-      <form class="form-horizontal" name="form" ng-submit="ctrl.saveBMI(ctrl.model)">
+      <form class="form-horizontal" name="parentForm" ng-submit="ctrl.saveBMI(ctrl.model)">
         <div
           class="form-group"
-          ng-class="ctrl.getHelpBlock(form.mode.$error).className"
+          ng-class="ctrl.getHelpBlock(parentForm.mode.$error).className"
         >
           <div class="col-sm-6">
             <div class="radio">
@@ -38,29 +38,26 @@
             </div>
           </div>
           <div class="col-sm-12">
-                <span
-                  class="help-block"
-                  ng-bind="ctrl.getHelpBlock(form.mode.$error).msg"
-                  ng-show="ctrl.showHelpBlock(form.mode.$error)"
-                >
-                </span>
+            <span
+              class="help-block"
+              ng-bind="ctrl.getHelpBlock(parentForm.mode.$error).msg"
+              ng-show="ctrl.showHelpBlock(parentForm.mode.$error)"
+            >
+            </span>
           </div>
         </div>
-        <ng-form name="standard" ng-show="ctrl.isMode('standard')">
-          <div ng-repeat="formGroup in ctrl.formGroups.standard">
-            <number-input mode="standard"></number-input>
-          </div>
-        </ng-form>
-        <ng-form name="metric" ng-show="ctrl.isMode('metric')">
-          <div ng-repeat="formGroup in ctrl.formGroups.metric">
-            <number-input mode="metric"></number-input>
-          </div>
-        </ng-form>
+        <d-form
+          ng-repeat="childForm in ctrl.forms"
+          child-form="childForm"
+          ctrl="ctrl"
+          parent-form="parentForm"
+        >
+        </d-form>
         <div class="form-group">
           <div class="col-sm-12">
             <input
               class="btn btn-primary pull-right"
-              ng-disabled="form.$invalid"
+              ng-disabled="parentForm.$invalid"
               type="submit"
               value="Save"
             >
