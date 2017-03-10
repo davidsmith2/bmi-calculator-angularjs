@@ -78,16 +78,18 @@
         <tr>
           <th>ID</th>
           <th>Time ago</th>
-          <th>BMI</th>
+          <th>Value</th>
+          <th>Description</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="item in ctrl.filteredList">
+        <tr ng-class="ctrl.getContextualClass(item.bmi.description)" ng-repeat="item in ctrl.filteredList">
           <td>
             <a href="#!/list/{{item.id}}" ng-bind="item.id"></a>
           </td>
           <td ng-bind="item.timeAgo"></td>
-          <td ng-bind="item.bmi"></td>
+          <td ng-bind="item.bmi.value"></td>
+          <td ng-bind="item.bmi.description"></td>
         </tr>
         </tbody>
       </table>

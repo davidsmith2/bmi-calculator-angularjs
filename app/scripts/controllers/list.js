@@ -84,6 +84,15 @@ angular.module('bmiCalculatorAngularApp')
         this.noMoreItems = function() {
           return self.list.length - self.currentLimit <= 0;
         };
+        this.getContextualClass = function(description) {
+          if (description === 'Normal weight') {
+            return 'bg-success';
+          }
+          if (description === 'Obese') {
+            return 'bg-danger';
+          }
+          return 'bg-warning';
+        };
         this.list = [];
         this.rows = 2;
         this.currentLimit = this.rows;

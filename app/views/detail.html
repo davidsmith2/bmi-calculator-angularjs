@@ -10,8 +10,10 @@
         <dd ng-bind="ctrl.item.id"></dd>
         <dt>Date</dt>
         <dd ng-bind="ctrl.item.id | date: 'medium'"></dd>
-        <dt>BMI</dt>
-        <dd ng-bind="ctrl.item.bmi"></dd>
+        <dt>Value</dt>
+        <dd ng-bind="ctrl.item.bmi.value"></dd>
+        <dt>Description</dt>
+        <dd ng-bind="ctrl.item.bmi.description"></dd>
         <dt>Mode</dt>
         <dd ng-bind="ctrl.item.mode"></dd>
       </dl>
