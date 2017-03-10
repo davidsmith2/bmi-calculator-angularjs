@@ -121,10 +121,10 @@ angular.module('bmiCalculatorAngularApp')
         ];
         fetchList();
   }])
-  .directive('dForm', function() {
+  .directive('childForm', function() {
     return {
       restrict: 'E',
-      templateUrl: 'directives/form.html',
+      templateUrl: 'directives/childForm.html',
       scope: {
         ctrl: '=',
         parentForm: '=',
@@ -137,10 +137,10 @@ angular.module('bmiCalculatorAngularApp')
       }
     };
   })
-  .directive('dNumberInput', [function() {
+  .directive('childFormInput', [function() {
     return {
       restrict: 'E',
-      templateUrl: 'directives/number-input.html',
+      templateUrl: 'directives/childFormInput.html',
       scope: {
         ctrl: '=',
         field: '=',

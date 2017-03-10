@@ -1,10 +1,10 @@
 <ng-form name="{{childForm.name}}" ng-show="ctrl.isMode(childForm.name)">
-  <d-number-input
+  <child-form-input
     ng-repeat="field in childForm.fields"
     child-form-name="{{childForm.name}}"
     ctrl="ctrl"
     field="field"
     parent-form="parentForm"
   >
-  </d-number-input>
+  </child-form-input>
 </ng-form>
