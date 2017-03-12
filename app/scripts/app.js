@@ -42,15 +42,58 @@ angular
       });
   })
   .factory('BMIService', ['$http', function($http) {
+    var bmiUrl = 'http://localhost:3000/api/bmi';
     return {
       index: function() {
-        return $http.get('http://localhost:3000/api/bmi');
+        return $http.get(bmiUrl);
       },
       create: function(data) {
-        return $http.post('http://localhost:3000/api/bmi', data);
+        return $http.post(bmiUrl, data);
       },
       show: function(id) {
-        return $http.get('http://localhost:3000/api/bmi/' + id);
+        return $http.get(bmiUrl + '/' + id);
+      },
+      delete: function(id) {
+        return $http.delete(bmiUrl + '/' + id);
+      }
+    };
+  }])
+  .factory('FormService', [function() {
+    var forms = [
+      {
+        name: 'standard',
+        fields: [
+          {
+            name: 'lb',
+            placeholder: '175'
+          },
+          {
+            name: 'ft',
+            placeholder: '5'
+          },
+          {
+            name: 'in',
+            placeholder: '8'
+          }
+        ]
+      },
+      {
+        name: 'metric',
+        fields: [
+          {
+            name: 'kg',
+            placeholder: '79'
+          },
+          {
+            name: 'cm',
+            placeholder: '173'
+          }
+        ]
+      }
+    ];
+    return {
+      getForms: function() {
+        return forms;
       }
     };
   }]);

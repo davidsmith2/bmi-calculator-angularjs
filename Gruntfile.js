@@ -220,7 +220,7 @@ module.exports = function (grunt) {
             }
           }
       }
-    }, 
+    },
 
     // Renames files for browser caching purposes
     filerev: {
@@ -458,20 +458,20 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'wiredep',
-    'useminPrepare',
-    'concurrent:dist',
-    'postcss',
-    'ngtemplates',
-    'concat',
-    'ngAnnotate',
+    'wiredep', // injects Bower packages into source code
+    'useminPrepare', // Replaces references from non-optimized assets to their optimized versions (see usemin)
+    'concurrent:dist', // Run grunt tasks concurrently
+    'postcss', // Apply several post-processors to your CSS using PostCSS.
+    'ngtemplates', // Generates and convert html to js templates
+    'concat', // Concatenate files
+    'ngAnnotate', // Adds, removes and rebuilds AngularJS dependency injection annotations
     'copy:dist',
-    'cdnify',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
+    'cdnify', // Finds and modifies static resource URLs
+    'cssmin', // Compresses CSS files
+    'uglify', // Minifies files with UglifyJS
+    'filerev', // Static asset revisioning through file content hash
+    'usemin', // Replaces references from non-optimized assets to their optimized versions (see useminPrepare)
+    'htmlmin' // Minifies HTML
   ]);
 
   grunt.registerTask('default', [

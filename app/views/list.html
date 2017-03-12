@@ -4,7 +4,7 @@
       <h2 class="panel-title">Form</h2>
     </div>
     <div class="panel-body">
-      <form class="form-horizontal" name="parentForm" ng-submit="ctrl.saveBMI(ctrl.model)">
+      <form class="form-horizontal" name="parentForm" ng-submit="ctrl.saveItem(ctrl.model)">
         <div
           class="form-group"
           ng-class="ctrl.getHelpBlock(parentForm.mode.$error).className"
@@ -80,16 +80,23 @@
           <th>Time ago</th>
           <th>Value</th>
           <th>Description</th>
+          <th>Delete</th>
         </tr>
         </thead>
         <tbody>
-        <tr ng-class="ctrl.getContextualClass(item.bmi.description)" ng-repeat="item in ctrl.filteredList">
+        <tr
+          ng-class="ctrl.getContextualClass(item.bmi.description)"
+          ng-repeat="item in ctrl.filteredList"
+        >
           <td>
             <a href="#!/list/{{item.id}}" ng-bind="item.id"></a>
           </td>
           <td ng-bind="item.timeAgo"></td>
           <td ng-bind="item.bmi.value"></td>
           <td ng-bind="item.bmi.description"></td>
+          <td>
+            <a href="#" ng-click="ctrl.deleteItem($event, item.id)">Delete</a>
+          </td>
         </tr>
         </tbody>
       </table>

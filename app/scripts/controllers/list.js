@@ -25,29 +25,10 @@ angular.module('bmiCalculatorAngularApp')
     };
   }])
   .controller(
-    'ListCtrl', ['BMIService', 'HelpService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter', 'pageName',
-      function(BMIService, HelpService, orderByFilter, limitToFilter, timeAgoFilter, pageName) {
+    'ListCtrl', ['BMIService', 'HelpService', 'FormService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter', 'pageName',
+      function(BMIService, HelpService, FormService, orderByFilter, limitToFilter, timeAgoFilter, pageName) {
         console.log(pageName);
         var self = this;
-        var fetchList = function() {
-          return BMIService
-            .index()
-            .then(function(response) {
-              self.list = response.data;
-              self.filteredList = self.filterList(self.list);
-            }, function(errorResponse) {
-              console.log('error while fetching list');
-            });
-        };
-        var saveItem = function(item) {
-          return BMIService
-            .create(item)
-            .then(function() {
-              self.model = {};
-            }, function(errorResponse) {
-              console.log('error while creating item');
-            });
-        };
         this.filterList = function() {
           return _.map(limitToFilter(orderByFilter(self.list, '-id'), self.currentLimit), function(o) {
             return _.assign({}, o, {timeAgo: timeAgoFilter(o.id)});
@@ -73,9 +54,36 @@ angular.module('bmiCalculatorAngularApp')
         this.isMode = function(mode) {
           return self.model && self.model.mode && self.model.mode === mode;
         };
-        this.saveBMI = function(data) {
-          saveItem(_.assign({}, {id: new Date().getTime()}, data))
-            .then(fetchList);
+        this.getList = function() {
+          return BMIService
+            .index()
+            .then(function(response) {
+              self.list = response.data;
+              self.filteredList = self.filterList(self.list);
+            }, function(errorResponse) {
+              console.log('error while fetching list');
+            });
+        };
+        this.saveItem = function(item) {
+          return BMIService
+            .create(item)
+            .then(function() {
+              self.model = {};
+            }, function(errorResponse) {
+              console.log('error while creating item');
+            })
+            .then(self.getList);
+        };
+        this.deleteItem = function(event, id) {
+          event.preventDefault();
+          return BMIService
+            .delete(id)
+            .then(function(response) {
+              console.log(id + ' deleted');
+            }, function(errorResponse) {
+              console.log('error while deleting item');
+            })
+            .then(self.getList);
         };
         this.showMoreItems = function() {
           self.currentLimit = self.currentLimit + self.rows;
@@ -96,39 +104,8 @@ angular.module('bmiCalculatorAngularApp')
         this.list = [];
         this.rows = 2;
         this.currentLimit = this.rows;
-        this.forms = [
-          {
-            name: 'standard',
-            fields: [
-              {
-                name: 'lb',
-                placeholder: '175'
-              },
-              {
-                name: 'ft',
-                placeholder: '5'
-              },
-              {
-                name: 'in',
-                placeholder: '8'
-              }
-            ]
-          },
-          {
-            name: 'metric',
-            fields: [
-              {
-                name: 'kg',
-                placeholder: '79'
-              },
-              {
-                name: 'cm',
-                placeholder: '173'
-              }
-            ]
-          }
-        ];
-        fetchList();
+        this.forms = FormService.getForms();
+        this.getList();
   }])
   .directive('childForm', function() {
     return {
@@ -139,11 +116,7 @@ angular.module('bmiCalculatorAngularApp')
         parentForm: '=',
         childForm: '='
       },
-      link: function(scope) {
-        console.log('ctrl: ', scope.ctrl);
-        console.log('parent form: ', scope.parentForm);
-        console.log('child form: ', scope.childForm);
-      }
+      link: function(scope) {}
     };
   })
   .directive('childFormInput', [function() {
@@ -156,12 +129,7 @@ angular.module('bmiCalculatorAngularApp')
         parentForm: '=',
         childFormName: '@'
       },
-      link: function(scope) {
-        console.log('ctrl: ', scope.ctrl);
-        console.log('field: ', scope.field);
-        console.log('parent form: ', scope.parentForm);
-        console.log('child form name: ', scope.childFormName);
-      }
+      link: function(scope) {}
     }
   }])
   .filter('timeAgo', [function() {
