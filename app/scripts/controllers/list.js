@@ -31,7 +31,7 @@ angular.module('bmiCalculatorAngularApp')
         var self = this;
         this.filterList = function() {
           return _.map(limitToFilter(orderByFilter(self.list, '-id'), self.currentLimit), function(o) {
-            return _.assign({}, o, {timeAgo: timeAgoFilter(o.id)});
+            return _.assign({}, o, {timeAgo: timeAgoFilter(o.date)});
           });
         };
         this.getHelpBlock = function(error) {
