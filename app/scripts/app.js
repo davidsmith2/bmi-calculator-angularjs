@@ -9,9 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('bmiCalculatorAngularApp', [
-    'ngRoute'
-  ])
+  .module('bmiCalculatorAngularApp', ['btford.socket-io', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
@@ -96,4 +94,27 @@ angular
         return forms;
       }
     };
-  }]);
+  }])
+  .factory('NotificationsService', [function() {
+    var url = 'http://localhost:3000';
+    var socket;
+    return {
+      sendMessage(message) {
+        socket.emit('message', message);
+      },
+      getMessages() {
+        var dfd = $.Deferred();
+        socket = io(url);
+        socket.on('message', function(data) {
+          dfd.resolve(data);
+        });
+        return dfd.promise();
+      }
+    };
+  }])
+  .factory('SocketService', function(socketFactory) {
+    var socket = io.connect('http://localhost:3000');
+    return socketFactory({
+      ioSocket: socket
+    });
+  });

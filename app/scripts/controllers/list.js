@@ -25,8 +25,8 @@ angular.module('bmiCalculatorAngularApp')
     };
   }])
   .controller(
-    'ListCtrl', ['BMIService', 'HelpService', 'FormService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter', 'pageName',
-      function(BMIService, HelpService, FormService, orderByFilter, limitToFilter, timeAgoFilter, pageName) {
+    'ListCtrl', ['BMIService', 'HelpService', 'FormService', 'SocketService', 'orderByFilter', 'limitToFilter', 'timeAgoFilter', 'pageName',
+      function(BMIService, HelpService, FormService, SocketService, orderByFilter, limitToFilter, timeAgoFilter, pageName) {
         console.log(pageName);
         var self = this;
         this.filterList = function() {
@@ -69,10 +69,10 @@ angular.module('bmiCalculatorAngularApp')
             .create(item)
             .then(function() {
               self.model = {};
+              self.notify({type: 'create'});
             }, function(errorResponse) {
               console.log('error while creating item');
-            })
-            .then(self.getList);
+            });
         };
         this.deleteItem = function(event, id) {
           event.preventDefault();
@@ -80,10 +80,10 @@ angular.module('bmiCalculatorAngularApp')
             .delete(id)
             .then(function(response) {
               console.log(id + ' deleted');
+              self.notify({type: 'delete'});
             }, function(errorResponse) {
               console.log('error while deleting item');
-            })
-            .then(self.getList);
+            });
         };
         this.showMoreItems = function() {
           self.currentLimit = self.currentLimit + self.rows;
@@ -101,11 +101,19 @@ angular.module('bmiCalculatorAngularApp')
           }
           return 'bg-warning';
         };
+        this.notify = function(message) {
+          SocketService.emit('message', message);
+        };
         this.list = [];
         this.rows = 2;
         this.currentLimit = this.rows;
         this.forms = FormService.getForms();
-        this.getList();
+        this.messages = [];
+        SocketService.on('message', function(message) {
+          self.messages.push(message);
+          self.getList();
+        });
+        this.notify({type: 'index'});
   }])
   .directive('childForm', function() {
     return {
