@@ -7,7 +7,7 @@
  * # ListCtrl
  * Controller of the bmiCalculatorAngularApp
  */
-angular.module('bmiCalculatorAngularApp')
+angular.module('bmiCalculatorAngularJSApp')
   .factory('HelpService', [function() {
     return {
       success: {

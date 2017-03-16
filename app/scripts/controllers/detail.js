@@ -7,7 +7,7 @@
  * # ListCtrl
  * Controller of the bmiCalculatorAngularApp
  */
-angular.module('bmiCalculatorAngularApp')
+angular.module('bmiCalculatorAngularJSApp')
   .controller('DetailCtrl', ['$routeParams', 'BMIService', 'pageName', function($routeParams, BMIService, pageName) {
     console.log(pageName);
     var self = this;

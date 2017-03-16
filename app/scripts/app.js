@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('bmiCalculatorAngularApp', ['btford.socket-io', 'ngRoute'])
+  .module('bmiCalculatorAngularJSApp', ['btford.socket-io', 'ngRoute'])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
